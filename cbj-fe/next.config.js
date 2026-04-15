@@ -14,6 +14,16 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
+  // 添加 rewrites 配置
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://127.0.0.1:8080/api/:path*', // 代理到后端
+      },
+    ];
+  },
+
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push({
       test: /\.svg$/,

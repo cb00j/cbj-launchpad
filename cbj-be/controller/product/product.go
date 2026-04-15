@@ -16,6 +16,8 @@ func (con ProductController) List(c *gin.Context) {
 	var productContractList []models.ProductContract
 	models.DB.Find(&productContractList)
 	c.JSON(http.StatusOK, gin.H{
-		"data": productContractList,
+		"code":    200,
+		"data":    productContractList,
+		"message": "success",
 	})
 }

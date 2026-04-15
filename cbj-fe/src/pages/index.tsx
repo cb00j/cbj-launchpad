@@ -43,17 +43,20 @@ export default function Index({ Component, pageProps }: AppProps) {
   useEffect(() => {
     axios.get('/api/boba/product/list')
       .then((res) => {
-        setProjectData(res.data);
-        setLivePoolsData(res.data.sort((a, b) => {
+        // 根据你的拦截器逻辑，res 可能是 Result 对象
+        // 需要取 res.data 才是数组
+        const actualData = res?.data || [];
+        
+        console.log('actualData:', actualData);
+        
+        setProjectData(actualData);
+        setLivePoolsData(actualData.sort((a, b) => {
           return a.status - b.status;
-        }).slice(0, 3))
+        }).slice(0, 3));
       })
       .catch((error) => {
+        console.error('API调用失败:', error);
       })
-
-    return (() => {
-
-    })
   }, []);
 
   useEffect(() => {
@@ -706,6 +709,7 @@ export default function Index({ Component, pageProps }: AppProps) {
   return (
     <main className={"container " + styles['container']}>
       {section1}
+      {section2}
       {/* {section2} */}
       {/* {section3}
       {section4}
