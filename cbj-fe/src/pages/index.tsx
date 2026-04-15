@@ -41,7 +41,7 @@ export default function Index({ Component, pageProps }: AppProps) {
   } = useResponsive();
 
   useEffect(() => {
-    axios.get('/boba/product/list')
+    axios.get('/api/boba/product/list')
       .then((res) => {
         setProjectData(res.data);
         setLivePoolsData(res.data.sort((a, b) => {
