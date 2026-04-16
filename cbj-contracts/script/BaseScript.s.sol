@@ -24,6 +24,7 @@ abstract contract BaseScript is Script {
 
         // 1. 确保目录和文件存在（如果文件不存在，先创建一个空的 JSON 对象）
         if (!vm.exists(DEPLOYMENT_PATH)) {
+            /// forge-lint: disable-next-line(unsafe-cheatcode)
             vm.writeFile(DEPLOYMENT_PATH, "{}");
         }
 
@@ -46,6 +47,7 @@ abstract contract BaseScript is Script {
     // 修改后的获取地址方法
     function getAddress(string memory name) public view returns (address) {
         string memory network = _getNetworkName();
+        /// forge-lint: disable-next-line(unsafe-cheatcode)
         string memory jsonContent = vm.readFile(DEPLOYMENT_PATH);
 
         // 根据路径读取：.networkName.contractName
