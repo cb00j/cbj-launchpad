@@ -67,6 +67,7 @@ export const useStake = () => {
     return token.address;
   }
 
+  // 质押币合约，一般质押的是提供流动性的LP代币
   const depositTokenContract: Contract = useMemo(() => {
     if (!depositTokenAddress || !signer) {
       return null;
@@ -76,6 +77,7 @@ export const useStake = () => {
     return depositTokenContract;
   }, [depositTokenAddress, signer, chain]);
 
+  // 奖励币合约
   const earnedTokenContract: Contract = useMemo(() => {
     if (!earnedTokenAddress || !signer) {
       return null;

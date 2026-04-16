@@ -2,7 +2,7 @@
 pragma solidity ^0.8.23;
 
 import {BaseScript} from "./BaseScript.s.sol";
-import {CBJToken} from "../src/CBJToken.sol";
+import {CBJToken} from "../src/token/CBJToken.sol";
 import {AirDrop} from "../src/AirDrop.sol";
 import {console2} from "forge-std/console2.sol";
 
