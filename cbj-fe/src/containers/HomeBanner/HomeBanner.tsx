@@ -65,7 +65,7 @@ export default function Header() {
       message.warn('connect wallet first')
     }
     try {
-      const res = await airdropContract.withdrawTokens()
+      const res = await airdropContract.claim()
       console.log(res, 're')
     } catch (error) {
       message.error(error.reason || error?.data?.message || error?.message || 'claim failed')
