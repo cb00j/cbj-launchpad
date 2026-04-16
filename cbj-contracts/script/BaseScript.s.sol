@@ -8,6 +8,7 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 abstract contract BaseScript is Script {
     uint256 internal deployerPrivateKey;
     address internal deployer;
+    address internal factory = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
 
     // 定义统一的部署记录文件路径
     string constant DEPLOYMENT_PATH = "./deployments/contract_addresses.json";

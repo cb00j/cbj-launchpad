@@ -74,7 +74,7 @@ export const tokenImage =
 // AirDropToken和Token用的是同一个Token
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x1275D096B9DBf2347bD2a131Fb6BDaB0B4882487", // 本地链 填C2N-TOKEN的地址
+    31337: "0xd7e2590BC8603f642491f74C272e4f6DF9a8BBA8", // 本地链 填C2N-TOKEN的地址
 }
 
 export const tokenSymbols = [
@@ -87,4 +87,4 @@ export const tokenInfos = [
     { chainId: 31337, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[31337] },
 ]
 
-export const AIRDROP_CONTRACT = "0x05Aa229Aec102f78CE0E852A812a388F076Aa555" // AIRDROP_TOKEN的地址：Airdrop-C2N
+export const AIRDROP_CONTRACT = "0x58D63663a7fB6D246A8E2CFc6E90c68816B20967" // AIRDROP_TOKEN的地址：Airdrop-C2N
