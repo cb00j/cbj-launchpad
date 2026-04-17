@@ -71,10 +71,16 @@ export const tokenAbi = [
 export const tokenImage =
     "http://bobabrewery.oss-ap-southeast-1.aliyuncs.com/brewery_logo.jpg";
 
-// AirDropToken和Token用的是同一个Token
+
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0xd7e2590BC8603f642491f74C272e4f6DF9a8BBA8", // 本地链 填C2N-TOKEN的地址
+    31337: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // 本地链 填C2N-TOKEN的地址
+}
+
+// LP token地址
+export const LP_TOKEN_ADDRESS_MAP = {
+    11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
+    31337: "0x82550B351160A5FeFb42a900247A0c321be23350", // 本地链 填LPTOKEN的地址
 }
 
 export const tokenSymbols = [
@@ -87,4 +93,9 @@ export const tokenInfos = [
     { chainId: 31337, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[31337] },
 ]
 
-export const AIRDROP_CONTRACT = "0x58D63663a7fB6D246A8E2CFc6E90c68816B20967" // AIRDROP_TOKEN的地址：Airdrop-C2N
+export const lpTokenInfos = [
+    { chainId: 11155111, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[11155111] },
+    { chainId: 31337, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[31337] },
+]
+
+export const AIRDROP_CONTRACT = "0x308AbC9917Ec87304EF43f21Ec4D22c13588E3D4" // AIRDROP_TOKEN的地址：Airdrop-C2N

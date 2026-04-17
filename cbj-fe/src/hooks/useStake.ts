@@ -15,7 +15,8 @@ import {
   APPROVE_STAKING_AMOUNT_ETHER,
   tokenAbi,
   stakingPoolAddresses,
-  tokenInfos
+  tokenInfos,
+  lpTokenInfos
 } from '@src/config'
 import { parseUnits } from 'ethers/lib/utils';
 
@@ -60,10 +61,10 @@ export const useStake = () => {
     }
   }, [stakingAddress, chain]);
 
-  const getAirDropToken = (chain) => {
+  const getLPToken = (chain) => {
     const chainId = chain.chainId
 
-    const token = tokenInfos.find(item => item.chainId == chainId) || tokenInfos[0];
+    const token = lpTokenInfos.find(item => item.chainId == chainId) || tokenInfos[0];
     return token.address;
   }
 
@@ -72,7 +73,7 @@ export const useStake = () => {
     if (!depositTokenAddress || !signer) {
       return null;
     }
-    const t = getAirDropToken(chain)
+    const t = getLPToken(chain)
     const depositTokenContract = new Contract(t, tokenAbi, signer);
     return depositTokenContract;
   }, [depositTokenAddress, signer, chain]);

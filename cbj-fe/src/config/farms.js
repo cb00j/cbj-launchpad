@@ -38,42 +38,62 @@ export default [
   //   aprRate: 0.35 / 66.6,
   //   aprUrl: "/boba/apr/boba",
   // },
-  { // 合约切换报错未解决
-    chainId: 11155111,
-    depositTokenAddress: "0x2Cfe540886864DF44D180D67fA7DEb1611AaAcDF",
-    earnedTokenAddress: "0x2Cfe540886864DF44D180D67fA7DEb1611AaAcDF",
-    stakingAddress: "0x6C336a43bC47648Dac96b1419958B8a4e78E05C1",
-    poolId: 0,
-    available: true,
-    depositSymbol: "FC2N",
-    earnedSymbol: "C2N",
-    title: "Sepolia/C2N FC2N",
-    depositLogo:
-      "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
-    earnedLogo:
-      "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/Brewery32x32.png",
-    getLptHref:
-      "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
-    aprRate: 3.15 / 20,
-    aprUrl: "/boba/apr/bsc",
-  },
+  // 合约切换报错未解决
+  // { 
+  //   chainId: 11155111,
+  //   depositTokenAddress: "0x2Cfe540886864DF44D180D67fA7DEb1611AaAcDF",
+  //   earnedTokenAddress: "0x2Cfe540886864DF44D180D67fA7DEb1611AaAcDF",
+  //   stakingAddress: "0x6C336a43bC47648Dac96b1419958B8a4e78E05C1",
+  //   poolId: 0,
+  //   available: true,
+  //   depositSymbol: "FC2N",
+  //   earnedSymbol: "C2N",
+  //   title: "Sepolia/C2N FC2N",
+  //   depositLogo:
+  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
+  //   earnedLogo:
+  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/Brewery32x32.png",
+  //   getLptHref:
+  //     "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
+  //   aprRate: 3.15 / 20,
+  //   aprUrl: "/boba/apr/bsc",
+  // },
   {
     chainId: 31337,
-    depositTokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // AIRDROP_TOKEN的地址
-    earnedTokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // AIRDROP_TOKEN的地址
+    depositTokenAddress: "0x82550B351160A5FeFb42a900247A0c321be23350", // CBJTOKEN的地址
+    earnedTokenAddress: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // LPTOKEN的地址
     stakingAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // FarmingC2N的地址
     poolId: 0,
     available: true,
-    depositSymbol: "FC2N",
-    earnedSymbol: "C2N",
-    title: "Local/C2N FC2N",
+    depositSymbol: "LP-USDT/CBJ",
+    earnedSymbol: "CBJ",
+    title: "Local/CBJ LP-USDT/CBJ",
     depositLogo:
-      "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/04/17/69e1a6dc29da4.png",
     earnedLogo:
-      "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/Brewery32x32.png",
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/04/17/69e1a6dc29da4.png",
     getLptHref:
       "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
     aprRate: 3.15 / 20,
     aprUrl: "/boba/apr/bsc",
   },
+  // {
+  //   chainId: 31337,
+  //   depositTokenAddress: "0x82550B351160A5FeFb42a900247A0c321be23350", // CBJTOKEN的地址
+  //   earnedTokenAddress: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // LPTOKEN的地址
+  //   stakingAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // FarmingC2N的地址
+  //   poolId: 0,
+  //   available: true,
+  //   depositSymbol: "LP-USDT/CBJ",
+  //   earnedSymbol: "CBJ",
+  //   title: "Local/CBJ LP-USDT/CBJ",
+  //   depositLogo:
+  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
+  //   earnedLogo:
+  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/Brewery32x32.png",
+  //   getLptHref:
+  //     "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
+  //   aprRate: 3.15 / 20,
+  //   aprUrl: "/boba/apr/bsc",
+  // },
 ];

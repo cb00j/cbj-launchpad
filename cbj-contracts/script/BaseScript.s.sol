@@ -22,24 +22,19 @@ abstract contract BaseScript is Script {
     function saveContract(string memory name, address addr) public {
         string memory network = _getNetworkName();
 
-        // 1. 确保目录和文件存在（如果文件不存在，先创建一个空的 JSON 对象）
+        // 1. 确保文件存在，如果不存在则初始化为空 JSON
         if (!vm.exists(DEPLOYMENT_PATH)) {
             /// forge-lint: disable-next-line(unsafe-cheatcode)
             vm.writeFile(DEPLOYMENT_PATH, "{}");
         }
 
-        // 2. 序列化当前合约地址
-        // 这里使用一个临时的 key "addressObj" 来构建内部对象
-        string memory jsonKey = "temp_key";
-        string memory contractJson = vm.serializeAddress(jsonKey, name, addr);
+        // 2. 构建 JSON 路径 (例如: .local.CBJToken)
+        // 注意：路径必须以 . 开头
+        string memory jsonPath = string.concat(".", network, ".", name);
 
-        // 3. 将合约地址写入对应的网络 key 下
-        // .networkName 表示在 JSON 根部的 networkName 字段下操作
-        vm.writeJson(
-            contractJson,
-            DEPLOYMENT_PATH,
-            string.concat(".", network)
-        );
+        // 3. 直接将地址字符串写入该路径
+        // writeJson 会自动处理：如果路径不存在则追加，如果存在则覆盖该值
+        vm.writeJson(vm.toString(addr), DEPLOYMENT_PATH, jsonPath);
 
         console2.log(string.concat("Saved ", name, " on ", network, ":"), addr);
     }

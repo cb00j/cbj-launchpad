@@ -568,11 +568,10 @@ export default function FarmingForm(props: FarmingFormProps) {
         }
         <section className={styles['container']}>
           <Row className={styles['container-title']} align="middle" justify="start">
-            {/* TODO: FIXME */}
-            {/* {depositSymbol} - {earnedSymbol} */}
-            {/* <img src={props.depositLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img> */}
+            {<div>{depositSymbol} - {earnedSymbol}</div>}
+            {<img src={props.depositLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img>}
             &nbsp;
-            {/* <img src={props.earnedLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img> */}
+            {<img src={props.earnedLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img>}
             &nbsp;
             {props.title}
           </Row>
