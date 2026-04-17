@@ -1,66 +1,25 @@
-## Foundry
+# anvil 账户地址 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+PRIVATE_KEY=0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
 
-Foundry consists of:
+0xa0Ee7A142d267C1f36714E4a8F75612F20a79720
+0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+cast send 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 "addPool(address,uint256,bool)" 0x82550B351160A5FeFb42a900247A0c321be23350 100 true --private-key 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d --rpc-url local
 
-## Documentation
+cast call 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 "poolInfo(uint256)(address,uint256,uint256,uint256,uint256)" 0 --rpc-url local
 
-https://book.getfoundry.sh/
+cast call 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 \
+ "userInfo(uint256,address)(uint256,uint256)" \
+ 0 0xa0Ee7A142d267C1f36714E4a8F75612F20a79720 \
+ --rpc-url local
 
-## Usage
+cast send 0x82550B351160A5FeFb42a900247A0c321be23350 "transfer(address,uint256)" 0xa0Ee7A142d267C1f36714E4a8F75612F20a79720 50 --private-key 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d --rpc-url local
 
-### Build
+cast call 0x82550B351160A5FeFb42a900247A0c321be23350 "balanceOf(address)" 0xa0Ee7A142d267C1f36714E4a8F75612F20a79720 --rpc-url local
 
-```shell
-$ forge build
-```
+cast send 0x82550B351160A5FeFb42a900247A0c321be23350 "approve(address,uint256)" 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 50 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6 --rpc-url local
 
-### Test
+cast send 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 "deposit(uint256,uint256)" 0 20 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6 --rpc-url local
 
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+cast send 0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157 "transfer(address,uint256)" 0xDA24C7C25037c962E4Ae5F80657c524fd9b39519 50 --private-key 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d --rpc-url local
