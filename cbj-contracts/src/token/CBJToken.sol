@@ -12,6 +12,7 @@ contract CBJToken is ERC20, Ownable {
         _mint(_owner, initialSupply);
     }
 
+    // for test
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
