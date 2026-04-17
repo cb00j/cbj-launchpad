@@ -4,7 +4,6 @@ pragma solidity ^0.8.23;
 import {BaseScript} from "./BaseScript.s.sol";
 import {LPToken} from "../src/token/LPToken.sol";
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
-import {console2} from "forge-std/console2.sol";
 
 contract LPTokenScript is BaseScript {
     function run() public broadcaster {

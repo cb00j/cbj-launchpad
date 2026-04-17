@@ -83,6 +83,7 @@ contract FarmingCBJ is Ownable {
         UserInfo storage user = userInfo[_pid][msg.sender];
 
         // new deposit will change the reward distribution, so we need to update the pool
+        // in this method,the pool will be updated before the user info is updated, so the user can get the reward for the previous deposit with the current accERC20PerShare
         updatePool(_pid);
 
         // if user has staked before,should settle current reward first with current accERC20PerShare

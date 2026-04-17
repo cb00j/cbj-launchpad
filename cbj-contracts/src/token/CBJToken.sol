@@ -11,4 +11,8 @@ contract CBJToken is ERC20, Ownable {
     ) ERC20("CBJ", "CBJ") Ownable(_owner) {
         _mint(_owner, initialSupply);
     }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
 }
