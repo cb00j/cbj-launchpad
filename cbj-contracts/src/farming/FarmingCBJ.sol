@@ -104,6 +104,44 @@ contract FarmingCBJ is Ownable {
         emit Deposit(msg.sender, _pid, _amount);
     }
 
+    // 从质押池撤出指定数量的LP Token，并计算相应的奖励
+    function withdraw(uint256 _pid, uint256 _amount) public {
+        UserInfo storage user = userInfo[_pid][msg.sender];
+    }
+
+    function pending(
+        uint256 _pid,
+        address _user
+    ) public view returns (uint256) {
+        PoolInfo storage pool = poolInfo[_pid];
+        UserInfo storage user = userInfo[_pid][_user];
+
+        uint256 accERC20PerShare = pool.accERC20PerShare;
+
+        // if current block time is greater than the last reward time, we need to calculate the pending reward with the current accERC20PerShare and the time elapsed since the last reward time
+        if (block.timestamp > pool.lastRewardTime && pool.totalDeposits != 0) {
+            uint256 lastTimestamp = block.timestamp > endTime
+                ? endTime
+                : block.timestamp;
+
+            // the pool's lastRewardTime may be updated after endTime
+            uint256 lastRewardTime = pool.lastRewardTime > endTime
+                ? endTime
+                : pool.lastRewardTime;
+
+            uint256 pendingTime = lastTimestamp - lastRewardTime;
+
+            uint256 poolReward = (pendingTime *
+                rewardPerSecond *
+                pool.allocPoint) / totalAllocPoint;
+
+            accERC20PerShare += (poolReward * 1e18) / pool.totalDeposits;
+        }
+
+        // the reward calculation fomala: user.amount * accERC20PerShare - user.rewardDebt
+        return (user.amount * accERC20PerShare) / 1e18 - user.rewardDebt;
+    }
+
     function addPool(
         IERC20 _lpToken,
         uint256 _allocPoint,
@@ -134,6 +172,47 @@ contract FarmingCBJ is Ownable {
                 totalDeposits: 0
             })
         );
+    }
+
+    // update the given pool's reward allocation point. Can only be called by the owner.
+    function setPool(
+        uint256 _pid,
+        uint256 _allocPoint,
+        bool _withUpdate
+    ) public onlyOwner {
+        if (_withUpdate) {
+            massUpdatePools();
+        }
+
+        totalAllocPoint =
+            totalAllocPoint -
+            poolInfo[_pid].allocPoint +
+            _allocPoint;
+        poolInfo[_pid].allocPoint = _allocPoint;
+    }
+
+    // return the given user's deposited amount for the given pool
+    function deposited(
+        uint256 _pid,
+        address _user
+    ) public view returns (uint256) {
+        return userInfo[_pid][_user].amount;
+    }
+
+    // return the number of LP pools
+    function poolLength() public view returns (uint256) {
+        return poolInfo.length;
+    }
+
+    function totalPending() public view returns (uint256) {
+        if (block.timestamp <= startTime) {
+            return 0;
+        }
+        uint256 lastTimestamp = block.timestamp > endTime
+            ? endTime
+            : block.timestamp;
+
+        return (lastTimestamp - startTime) * rewardPerSecond - paidOut;
     }
 
     function massUpdatePools() private {
