@@ -11,7 +11,8 @@ contract AirDropScript is BaseScript {
         bytes32 _salt = bytes32(
             0x0000000000000000000000000000000000000000000000000000000000000001
         );
-        CBJToken token = new CBJToken{salt: _salt}(deployer, 1000_000 * 1e18);
+        // 部署 CBJToken 合约并预先铸造 200 万个 CBJ 给 deployer
+        CBJToken token = new CBJToken{salt: _salt}(deployer, 2000_000 * 1e18);
         saveContract("CBJToken", address(token));
         console2.log(
             "CBJToken balance of deployer:",

@@ -8,6 +8,9 @@ import {
 } from 'ethers'
 import abiJSON from '@src/util/abis.json'
 
+
+import FarmingCBJ from '@src/util/abi/FarmingCBJ.json';
+
 import { parseEther } from "@src/util/index";
 
 import {
@@ -44,7 +47,7 @@ export const useStake = () => {
 
   const stakingContract: Contract = useMemo(() => {
     if (stakingAddress && signer) {
-      const stakingContract = new Contract(stakingAddress, abiJSON['hardhat']['AllocationStaking'], signer);
+      const stakingContract = new Contract(stakingAddress, FarmingCBJ, signer);
       return stakingContract;
     } else {
       return null;
@@ -54,7 +57,7 @@ export const useStake = () => {
   const viewStakingContract: Contract = useMemo(() => {
     if (stakingAddress && chain) {
       const viewProvider = new providers.JsonRpcProvider(chain.rpc[0]);
-      const viewStakingContract = new Contract(stakingAddress, abiJSON['hardhat']['AllocationStaking'], viewProvider);
+      const viewStakingContract = new Contract(stakingAddress, FarmingCBJ, viewProvider);
       return viewStakingContract;
     } else {
       return null;
@@ -98,9 +101,12 @@ export const useStake = () => {
   useEffect(() => {
     if (!depositTokenContract || !walletAddress) {
     } else {
+      console.log(depositTokenContract, 'depositTokenContract11');
+      console.log(walletAddress, 'walletAddress11')
       depositTokenContract.balanceOf(walletAddress).then(setBalance).catch((e) => { console.error(e) });
       depositTokenContract.decimals().then(setDepositDecimals).catch((e) => { console.error(e) });
       depositTokenContract.symbol().then(setDepositSymbol).catch((e) => { console.error(e) });
+      console.log(balance, 'balance1111');
     }
   }, [depositTokenContract, walletAddress]);
 
@@ -109,9 +115,12 @@ export const useStake = () => {
       if (!depositTokenContract || !account) {
       } else {
         try {
+          console.log(depositTokenContract, 'depositTokenContract2');
+          console.log(walletAddress, 'walletAddress2')
           depositTokenContract.balanceOf(account).then(setBalance).catch((e) => { console.error(e) });
           depositTokenContract.decimals().then(setDepositDecimals).catch((e) => { console.error(e) });
           depositTokenContract.symbol().then(setDepositSymbol).catch((e) => { console.error(e) });
+          console.log(balance, 'balance22222');
         } catch (e) {
         }
       }
@@ -157,39 +166,31 @@ export const useStake = () => {
 
   async function approve(contractAddress, amount, decimals = 18) {
     if (!depositTokenContract) {
-      return Promise.reject();
-    }
-    try {
-      const res = await depositTokenContract.allowance(walletAddress, contractAddress)
-      console.log(res, 're')
-    } catch (error) {
-      console.log(error, 'eeeeeeeeeeee')
+      return Promise.reject(new Error('no deposit token contract'));
     }
 
-    let biggerAmountEther;
-    const number_1E18 = '1000000000000000000';
-    biggerAmountEther = amount > APPROVE_STAKING_AMOUNT_ETHER ? amount : APPROVE_STAKING_AMOUNT_ETHER;
-    // if (allowance && parseEther(amount).lte(allowance)) {
-    //   return Promise.resolve();
-    // }
-    // decide approve amount
-    const approveAmount = biggerAmountEther;
-    console.log({ depositTokenAddress, contractAddress, amount: ethers.utils.parseUnits(approveAmount + '', decimals) }, 222, depositTokenContract)
-    return (
-      (depositTokenContract.approve &&
-        depositTokenContract.approve(contractAddress, parseUnits('10000', 18)))
-        .then(transaction => {
-          return transaction.wait();
-        })
-        .catch(e => {
-          console.error(e);
-        })
-        .finally(() => {
-          getAllowance(walletAddress, allowanceAddress);
-        })
-      ||
-      Promise.reject()
-    );
+    // 检查现有 allowance，足够则跳过
+    const allowance = await depositTokenContract.allowance(walletAddress, contractAddress);
+    const requiredAmount = parseUnits(amount + '', decimals);
+    if (allowance.gte(requiredAmount)) {
+      return;
+    }
+
+    // 决定 approve 金额
+    const approveAmount = amount > APPROVE_STAKING_AMOUNT_ETHER ? amount : APPROVE_STAKING_AMOUNT_ETHER;
+
+    try {
+      const tx = await depositTokenContract.approve(
+        contractAddress,
+        parseUnits(approveAmount + '', decimals)
+      );
+      await tx.wait();
+    } catch (e) {
+      console.error(e);
+      throw e; // 让外层感知失败
+    } finally {
+      getAllowance(walletAddress, allowanceAddress);
+    }
   }
 
   function deposit(pid, amount) {

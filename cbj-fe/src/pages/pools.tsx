@@ -50,10 +50,10 @@ export default function Pools({ Component, pageProps }: AppProps) {
     return d;
   }, [data])
 
-  /*useEffect(() => {
+  useEffect(() => {
     setPageLoading(true);
 
-    axios.get('/boba/product/list')
+    axios.get('/api/boba/product/list')
       .then((res) => {
         setData(res.data);
       })
@@ -68,7 +68,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
     return (() => {
 
     })
-  }, []);*/
+  }, []);
   const mockData = [
     { id: 1, name: 'Project 1', description: 'Description 1' , img:'',status:1,amount:'',saleContractAddress:'',tokenAddress:'',paymentToken:'',follower:2,},
     { id: 1, name: 'Project 1', description: 'Description 1' , img:'',status:1,amount:'',saleContractAddress:'',tokenAddress:'',paymentToken:'',follower:2,}

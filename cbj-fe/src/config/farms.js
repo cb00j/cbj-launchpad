@@ -62,7 +62,7 @@ export default [
     chainId: 31337,
     depositTokenAddress: "0x82550B351160A5FeFb42a900247A0c321be23350", // CBJTOKEN的地址
     earnedTokenAddress: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // LPTOKEN的地址
-    stakingAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // FarmingC2N的地址
+    stakingAddress: "0xA1F663Bd77C53A3c2a4725F12741E85216357BB8", // FarmingC2N的地址
     poolId: 0,
     available: true,
     depositSymbol: "LP-USDT/CBJ",

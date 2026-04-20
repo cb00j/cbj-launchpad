@@ -16,10 +16,10 @@ export const stakingPoolAddresses = [
     },
     {
         chainId: 31337,
-        stakingAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318", // 填AllocationStakingProxy的地址
+        stakingAddress: "0xA1F663Bd77C53A3c2a4725F12741E85216357BB8", // 填AllocationStakingProxy的地址
         // TODO
-        depositTokenAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // 填C2N-Token的地址
-        earnedTokenAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // 填C2N-Token的地址
+        depositTokenAddress: "0x9C645aE1079817ac0F415b39f7800038702C4af2", // 填C2N-Token的地址
+        earnedTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 填C2N-Token的地址
     },
 ];
 
@@ -43,7 +43,7 @@ export * from "./valid_chains";
 export const STAKING_POOL_ID = 0;
 
 export const APPROVE_STAKING_AMOUNT_ETHER = 1000000;
-
+ 
 export const TELEGRAM_BOT_ID = process.env.NEXT_PUBLIC_TG_BOT_ID;
 
 export const BASE_URL = "https://pancakeswap.finance";
@@ -74,7 +74,7 @@ export const tokenImage =
 
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // 本地链 填C2N-TOKEN的地址
+    31337: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 本地链 填C2N-TOKEN的地址
 }
 
 // LP token地址
@@ -98,4 +98,4 @@ export const lpTokenInfos = [
     { chainId: 31337, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[31337] },
 ]
 
-export const AIRDROP_CONTRACT = "0x308AbC9917Ec87304EF43f21Ec4D22c13588E3D4" // AIRDROP_TOKEN的地址：Airdrop-C2N
+export const AIRDROP_CONTRACT = "0x37c0166D96702b3446854448189b7bc4Bb6c475D" // AIRDROP_TOKEN的地址：Airdrop-C2N

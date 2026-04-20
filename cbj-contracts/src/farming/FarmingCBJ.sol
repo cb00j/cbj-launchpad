@@ -4,8 +4,9 @@ pragma solidity ^0.8.23;
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract FarmingCBJ is Ownable {
+contract FarmingCBJ is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     struct UserInfo {
@@ -97,16 +98,58 @@ contract FarmingCBJ is Ownable {
 
         pool.totalDeposits += _amount;
         user.amount += _amount;
-        user.rewardDebt += (user.amount * pool.accERC20PerShare) / 1e18;
+        user.rewardDebt = (user.amount * pool.accERC20PerShare) / 1e18;
 
         pool.lpToken.safeTransferFrom(msg.sender, address(this), _amount);
 
         emit Deposit(msg.sender, _pid, _amount);
     }
 
-    // 从质押池撤出指定数量的LP Token，并计算相应的奖励
-    function withdraw(uint256 _pid, uint256 _amount) public {
+    // withdraw LP tokens from the pool;
+    // calculate and transfer the pending reward to the user
+    function withdraw(uint256 _pid, uint256 _amount) public nonReentrant {
         UserInfo storage user = userInfo[_pid][msg.sender];
+        PoolInfo storage pool = poolInfo[_pid];
+
+        require(user.amount >= _amount, "can't withdraw more than deposit");
+
+        // calulate accumulated reward per share and update the pool
+        updatePool(_pid);
+
+        // calulate the pending reward for the user with the current accERC20PerShare
+        uint256 reward = (user.amount * pool.accERC20PerShare) /
+            1e18 -
+            user.rewardDebt;
+
+        // update user info and pool info before transfer the reward and LP tokens to prevent reentrancy attack
+        user.amount -= _amount;
+        user.rewardDebt = (user.amount * pool.accERC20PerShare) / 1e18;
+        pool.totalDeposits -= _amount;
+        paidOut += reward;
+
+        // withdraw the LP tokens and reward to the user
+        token.safeTransfer(msg.sender, reward);
+        pool.lpToken.safeTransfer(msg.sender, _amount);
+
+        emit Withdraw(msg.sender, _pid, _amount);
+    }
+
+    // Withdraw without caring about rewards. EMERGENCY ONLY
+    function emergencyWithdraw(uint256 _pid) public nonReentrant {
+        UserInfo storage user = userInfo[_pid][msg.sender];
+        PoolInfo storage pool = poolInfo[_pid];
+
+        uint256 amount = user.amount;
+
+        // update user info and pool info before transfer the LP tokens to prevent reentrancy attack
+        user.amount = 0;
+        user.rewardDebt = 0;
+        pool.totalDeposits -= amount;
+
+        // withdraw the LP tokens to the user, but no reward
+        pool.lpToken.safeTransfer(msg.sender, amount);
+
+        emit EmergencyWithdraw(msg.sender, _pid, amount);
     }
 
     function pending(
@@ -189,6 +232,13 @@ contract FarmingCBJ is Ownable {
             poolInfo[_pid].allocPoint +
             _allocPoint;
         poolInfo[_pid].allocPoint = _allocPoint;
+    }
+
+    function fund(uint256 _amount) public {
+        require(_amount > 0, "fund amount must be greater than 0");
+        require(block.timestamp < endTime, "funding has already ended");
+        token.safeTransferFrom(msg.sender, address(this), _amount);
+        endTime += _amount / rewardPerSecond;
     }
 
     // return the given user's deposited amount for the given pool
