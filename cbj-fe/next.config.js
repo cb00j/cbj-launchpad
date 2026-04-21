@@ -18,8 +18,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'http://127.0.0.1:8080/api/:path*', // 代理到后端
+        source: '/cbj-launchpad/:path*',
+        destination: 'http://127.0.0.1:8080/cbj-launchpad/:path*', // 代理到后端
       },
     ];
   },

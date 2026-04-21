@@ -150,7 +150,7 @@ export default function Pool({ Component, pageProps }: AppProps) {
     setPageLoading(true);
 
     // get projects info
-    axios.get('/boba/product/base_info', { params: { productId: pId } })
+    axios.get('/api/product/base_info', { params: { productId: pId } })
       .then((response) => {
         let data = response.data || {};
         data.allocationTop = 1;

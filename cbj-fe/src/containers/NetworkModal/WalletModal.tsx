@@ -167,7 +167,7 @@ export default function WalletModal() {
     <>
       <Modal 
         title={null}
-        visible={walletShowed}
+        open={walletShowed}
         onCancel={onCancel}
         footer={null}
         >

@@ -41,7 +41,7 @@ export default function Index({ Component, pageProps }: AppProps) {
   } = useResponsive();
 
   useEffect(() => {
-    axios.get('/api/boba/product/list')
+    axios.get('/api/product/list')
       .then((res) => {
         // 根据你的拦截器逻辑，res 可能是 Result 对象
         // 需要取 res.data 才是数组
@@ -564,66 +564,70 @@ export default function Index({ Component, pageProps }: AppProps) {
               ))
             }
           </Row>
-          <style lang="scss">{`
-            .sec-6 h2 {
-              margin-top: 80px;
-            }
-            .sec-6 .desc {
-              margin-top: 57px;
-            }
-            .sec-6 .extra {
-              font-family: Arial;
-              margin-top: 40px;
-              font-size: 0.22rem;
-              color: #FFB852;
-            }
-            .sec-6 .features {
-              width: 100%;
-              margin-top: 24px;
-            }
-            .sec-6 .feature {
-              flex-shrink: 0;
-              flex-grow: 0;
-              display: inline-block;
-              width: 257px;
-              height: 133px;
-              border-radius: 16px;
-              position: relative;
-              background-color: black;
-            }
-            .sec-6 .feature::after{
-              content: "";
-              width: 261px;
-              height: 137px;
-              position: absolute;
-              top: -2px;
-              left: -2px;
-              z-index: -10;
-              border-radius: 15px;
-              background-image: linear-gradient(180deg, #D7FF1E 0%, #FFB852 100%);
-            }
-            .sec-6 .text {
-              width: 100%;
-              position: absolute;
-              top: 50%;
-              text-align: center;
-              font-size: 0.24rem;
-              transform: translateY(-50%);
-            }
-            @media (max-width:769px) {
-              .sec-6 .feature {
-                width: 100%;
-                height: 68px;
-              }
-              .sec-6 .feature::after{
-                width: calc(100% + 4px);
-                height: 74px;
-              }
-              .sec-6 .text {
-                font-size: 0.16rem;
-              }
-            }
-          `}</style>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                      .sec-6 h2 {
+                        margin-top: 80px;
+                      }
+                      .sec-6 .desc {
+                        margin-top: 57px;
+                      }
+                      .sec-6 .extra {
+                        font-family: Arial;
+                        margin-top: 40px;
+                        font-size: 0.22rem;
+                        color: #FFB852;
+                      }
+                      .sec-6 .features {
+                        width: 100%;
+                        margin-top: 24px;
+                      }
+                      .sec-6 .feature {
+                        flex-shrink: 0;
+                        flex-grow: 0;
+                        display: inline-block;
+                        width: 257px;
+                        height: 133px;
+                        border-radius: 16px;
+                        position: relative;
+                        background-color: black;
+                      }
+                      .sec-6 .feature::after{
+                        content: '';
+                        width: 261px;
+                        height: 137px;
+                        position: absolute;
+                        top: -2px;
+                        left: -2px;
+                        z-index: -10;
+                        border-radius: 15px;
+                        background-image: linear-gradient(180deg, #D7FF1E 0%, #FFB852 100%);
+                      }
+                      .sec-6 .text {
+                        width: 100%;
+                        position: absolute;
+                        top: 50%;
+                        text-align: center;
+                        font-size: 0.24rem;
+                        transform: translateY(-50%);
+                      }
+                      @media (max-width:769px) {
+                        .sec-6 .feature {
+                          width: 100%;
+                          height: 68px;
+                        }
+                        .sec-6 .feature::after{
+                          width: calc(100% + 4px);
+                          height: 74px;
+                        }
+                        .sec-6 .text {
+                          font-size: 0.16rem;
+                        }
+                      }
+                    `,
+            }}
+          />
         </div>
       </section>
     </ScrollAnimation>
@@ -719,38 +723,42 @@ export default function Index({ Component, pageProps }: AppProps) {
       {section4}
       {section5}
       {section6} */}
-      <style lang="scss">{`
-        .desc {
-          display: block;
-          font-size: 0.18rem;
-          line-height: 36px;
-          white-space: nowrap;
-        }
-        @media (max-width: 767px) {
-          .desc {
-            white-space: normal;
-          }
-          br {
-            content: ' ';
-          }
-          br:after {
-            content: ' ';
-            display: inline-block;
-            width: .25em;
-          }
-        }
-        .feature {
-          user-select: none;
-          cursor: pointer;
-        }
-        .background {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          z-index: -999;
-          background-position: center;
-        }
-      `}</style>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+              .desc {
+                display: block;
+                font-size: 0.18rem;
+                line-height: 36px;
+                white-space: nowrap;
+              }
+              @media (max-width: 767px) {
+                .desc {
+                  white-space: normal;
+                }
+                br {
+                  content: ' ';
+                }
+                br:after {
+                  content: ' ';
+                  display: inline-block;
+                  width: .25em;
+                }
+              }
+              .feature {
+                user-select: none;
+                cursor: pointer;
+              }
+              .background {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                z-index: -999;
+                background-position: center;
+              }
+            `,
+        }}
+      />
     </main>
   )
 }

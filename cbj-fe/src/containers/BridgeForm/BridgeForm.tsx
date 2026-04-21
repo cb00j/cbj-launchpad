@@ -558,7 +558,7 @@ export default function BridgeForm(props: { available: boolean }) {
   return (
     <PageLoader>
       <div className={styles['bridge-form']}>
-        <Modal visible={confirmModalVisible}></Modal>
+        <Modal open={confirmModalVisible}></Modal>
         {/* deposit form */}
         <section className={styles['section']}>
           <Row justify="space-between" gutter={[16, 16]}>

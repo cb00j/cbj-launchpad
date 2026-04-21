@@ -19,7 +19,7 @@ export default function InviteModal(props: InviteModalProps) {
 
     return <Modal
         title={<div className={styles['modal-title']}>My referral link</div>}
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         footer={null}
     >

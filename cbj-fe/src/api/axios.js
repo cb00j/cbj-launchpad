@@ -13,7 +13,7 @@ axios.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;
 
 // Create axios instance
 const http = axios.create({
-  baseURL: '/', 
+  baseURL: '/cbj-launchpad', 
   timeout: 150000,
 })
 

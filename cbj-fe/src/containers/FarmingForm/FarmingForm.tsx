@@ -380,7 +380,7 @@ export default function FarmingForm(props: FarmingFormProps) {
   return (
     <div>
       {/* deposit form */}
-      <Modal visible={formVisible} title={null} footer={null} onCancel={() => { setFormVisible(false) }}>
+      <Modal open={formVisible} title={null} footer={null} onCancel={() => { setFormVisible(false) }}>
         <Tabs className={styles['modal']} type="card">
           {/* stake form */}
           <TabPane key="1" tab="Stake">

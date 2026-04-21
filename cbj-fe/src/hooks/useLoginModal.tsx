@@ -685,7 +685,7 @@ export const useLogin = ({ pId = 0 }) => {
   const LoginModal = (
     <Modal
       title={null}
-      visible={isModalVisible}
+      open={isModalVisible}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
       footer={null}

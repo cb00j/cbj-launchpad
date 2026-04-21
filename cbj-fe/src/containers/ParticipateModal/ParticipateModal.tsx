@@ -68,7 +68,7 @@ export default function ParticipateModal(props) {
     <Modal
       title={null}
       width={732}
-      visible={props.visible}
+      open={props.visible}
       onOk={handleOk}
       onCancel={props.handleCancel}
       okText={'Purchase'}

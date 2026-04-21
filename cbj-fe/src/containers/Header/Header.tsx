@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link'
-import { Layout, Row, Col, Menu, Dropdown } from 'antd';
+import { Layout, Row, Col } from 'antd';
 import { MenuOutlined } from '@ant-design/icons'
 
 import { useResponsive } from '@src/hooks/useResponsive';
@@ -24,7 +24,7 @@ export default function Header() {
   const { Header } = Layout;
   const router = useRouter();
 
-  let activeTabIndex = useMemo(() => {
+  const activeTabIndex = useMemo(() => {
     return [
       '/',
       '/stake',
@@ -36,47 +36,46 @@ export default function Header() {
   }, [router])
 
   const menu = (
-    <Menu style={{ background: '#000000', border: '2px solid #FFB85280' }}>
-      <div className={[styles['menu-item']].join(' ')}>
+    <div
+      className={styles['mobile-menu']}
+      style={{ background: '#000000', border: '2px solid #FFB85280' }}
+    >
+      <div className={styles['menu-item']}>
         <Link href="/">
           <div className={[styles.button, activeTabIndex == 0 ? styles['active'] : ''].join(' ')}>Home</div>
         </Link>
       </div>
-      <div className={[styles['menu-item']].join(' ')}>
+      <div className={styles['menu-item']}>
         <Link href="/farming">
           <div className={[styles.button, activeTabIndex == 2 ? styles['active'] : ''].join(' ')}>Farm</div>
         </Link>
       </div>
-      <div className={[styles['menu-item']].join(' ')}>
+      <div className={styles['menu-item']}>
         <Link href="/pools">
           <div className={[styles.button, activeTabIndex == 3 || activeTabIndex == 4 ? styles['active'] : ''].join(' ')}>Projects</div>
         </Link>
       </div>
-      <div className={[styles['menu-item']].join(' ')}>
+      <div className={styles['menu-item']}>
         <Link href="/stake">
           <div className={[styles.button, activeTabIndex == 1 ? styles['active'] : ''].join(' ')}>Staking</div>
         </Link>
       </div>
-      <div className={[styles['menu-item']].join(' ')}>
+      <div className={styles['menu-item']}>
         <WalletButton
           className={styles['wallet-button-mobile']}
-          style={{ background: 'none', 'boxShadow': 'none' }}
-        ></WalletButton>
+          style={{ background: 'none', boxShadow: 'none' }}
+        />
       </div>
-    </Menu>
-  )
+    </div>
+  );
 
   return <Header className={styles.header}>
     <Row className="main-content">
       <Col span={6}>
-        {/* logo */}
         <Link href="/">
           <div className={styles['logo']} style={{ cursor: 'pointer' }}>
             <h1 className={"Boba title app-name " + styles.title}>
-              {/* <i className={['icon', styles['logo-icon']].join(' ')}></i> */}
               <span className={styles.logo}></span>
-              {/* <IconAppLogo className={['icon', styles['logo-icon']].join(' ')} /> */}
-              {/* <span className={styles['app-name']}>C2N</span> */}
             </h1>
           </div>
         </Link>
@@ -103,21 +102,18 @@ export default function Header() {
               </Row>
             ) : ['/safepal'].includes(router.pathname)
               ? <>
-                <WalletButton
-                  className={styles['wallet-button-safepal']}
-                ></WalletButton>
+                <WalletButton className={styles['wallet-button-safepal']}></WalletButton>
               </>
               : <>
                 <Row justify="end" align="middle" style={{ width: '100%', height: '100%' }}>
-                  <MenuOutlined style={{ fontSize: '0.36rem' }} onClick={() => setShowSider(!showSider)}>
-                  </MenuOutlined>
+                  <MenuOutlined style={{ fontSize: '0.36rem' }} onClick={() => setShowSider(!showSider)} />
                 </Row>
                 <Layout.Sider
                   collapsed={!showSider}
                   collapsedWidth={0}
                   theme="light"
                   onClick={() => setShowSider(!showSider)}
-                  style={{ 'position': 'fixed', 'right': '0', 'textIndent': '1em', 'zIndex': '100' }}>
+                  style={{ position: 'fixed', right: '0', textIndent: '1em', zIndex: 100 }}>
                   {menu}
                 </Layout.Sider>
                 <div className={styles['sider-background']} onClick={() => setShowSider(!showSider)} style={{ display: showSider ? 'block' : 'none' }}>

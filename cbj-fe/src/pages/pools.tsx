@@ -53,7 +53,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setPageLoading(true);
 
-    axios.get('/api/boba/product/list')
+    axios.get('/api/product/list')
       .then((res) => {
         setData(res.data);
       })
