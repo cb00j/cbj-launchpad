@@ -16,7 +16,7 @@ export const stakingPoolAddresses = [
     },
     {
         chainId: 31337,
-        stakingAddress: "0xA1F663Bd77C53A3c2a4725F12741E85216357BB8", // 填AllocationStakingProxy的地址
+        stakingAddress: "0x3aa036a2F3795AB07c9e38589514624acB5de350", // FarmingCBJ的地址
         // TODO
         depositTokenAddress: "0x9C645aE1079817ac0F415b39f7800038702C4af2", // 填C2N-Token的地址
         earnedTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 填C2N-Token的地址
@@ -74,13 +74,13 @@ export const tokenImage =
 
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 本地链 填C2N-TOKEN的地址
+    31337: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 本地链 填CBJTOKEN的地址
 }
 
 // LP token地址
 export const LP_TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x82550B351160A5FeFb42a900247A0c321be23350", // 本地链 填LPTOKEN的地址
+    31337: "0x66DF8ccc423C6E2f32Ca00d1eAA7A3D3F14226f3", // 本地链 填LPTOKEN的地址
 }
 
 export const tokenSymbols = [

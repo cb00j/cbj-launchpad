@@ -1,6 +1,7 @@
 package router
 
 import (
+	"cbj-be/controller/encode"
 	"cbj-be/controller/product"
 	"cbj-be/middleware"
 
@@ -18,4 +19,9 @@ func ApiRouterInit(r *gin.RouterGroup) {
 	productRouter := apiRouter.Group("product")
 	productRouter.GET("/list", product.ProductController{}.List)
 	productRouter.GET("/base_info", product.ProductController{}.BaseInfo)
+	productRouter.GET("/apr", product.ProductController{}.Apr)
+
+	encodeRouter := apiRouter.Group("encode")
+	encodeRouter.POST("/sign_registration", encode.EncodeController{}.SignRegistration)
+	encodeRouter.POST("/sign_participation", encode.EncodeController{}.SignParticipation)
 }

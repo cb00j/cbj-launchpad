@@ -60,9 +60,9 @@ export default [
   // },
   {
     chainId: 31337,
-    depositTokenAddress: "0x82550B351160A5FeFb42a900247A0c321be23350", // CBJTOKEN的地址
-    earnedTokenAddress: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // LPTOKEN的地址
-    stakingAddress: "0xA1F663Bd77C53A3c2a4725F12741E85216357BB8", // FarmingC2N的地址
+    depositTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // CBJTOKEN的地址
+    earnedTokenAddress: "0x66DF8ccc423C6E2f32Ca00d1eAA7A3D3F14226f3", // LPTOKEN的地址
+    stakingAddress: "0x3aa036a2F3795AB07c9e38589514624acB5de350", // FarmingCBJ的地址
     poolId: 0,
     available: true,
     depositSymbol: "LP-USDT/CBJ",
@@ -75,7 +75,7 @@ export default [
     getLptHref:
       "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
     aprRate: 3.15 / 20,
-    aprUrl: "/boba/apr/bsc",
+    aprUrl: "/api/product/apr",
   },
   // {
   //   chainId: 31337,

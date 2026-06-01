@@ -138,12 +138,11 @@ export default function FarmingForm(props: FarmingFormProps) {
       getPoolInfo(poolId);
       getRewardPerSecond();
       updateBalanceInfo();
-
-      // getApR();
+      getApR();
     }
 
     schedule();
-    poolInfoTimer = setInterval(() => schedule, 20000);
+    poolInfoTimer = setInterval(() => schedule(), 20000);
 
     return () => {
       clearInterval(poolInfoTimer);
@@ -239,15 +238,15 @@ export default function FarmingForm(props: FarmingFormProps) {
     }
   }
 
-  // async function getApR() {
-  //   axios.get(props.aprUrl).then((res) => {
-  //     const data = res?.data;
-  //     const apr = (data.apr * 100).toFixed(2);
-  //     setApr(apr);
-  //     const priceInLP = (data.priceInLP).toFixed(2);
-  //     setPriceInLP(priceInLP);
-  //   })
-  // }
+  async function getApR() {
+    axios.get(props.aprUrl).then((res: any) => {
+      const data = res;
+      const apr = (data.apr * 100).toFixed(2);
+      setApr(apr);
+      const priceInLP = (data.priceInLP).toFixed(2);
+      setPriceInLP(priceInLP);
+    })
+  }
 
 
   /**

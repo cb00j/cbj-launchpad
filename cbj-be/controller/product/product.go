@@ -56,3 +56,12 @@ func (con ProductController) List(c *gin.Context) {
 		"message": "success",
 	})
 }
+
+func (con ProductController) Apr(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"code":      200,
+		"apr":       0.89,
+		"priceInLP": 0.5,
+		"message":   "success",
+	})
+}

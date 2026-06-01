@@ -52,19 +52,17 @@ contract FarmingCBJ is Ownable, ReentrancyGuard {
         uint256 indexed pid,
         uint256 amount
     );
+    event RewardPeriodUpdated(uint256 startTime, uint256 endTime);
 
     constructor(
         address _initialOwner,
         IERC20 _token,
-        uint256 _rewardPerSecond,
-        uint256 _startTime,
-        uint256 _endTime
+        uint256 _rewardPerSecond
     ) Ownable(_initialOwner) {
         require(
             _initialOwner != address(0),
             "initial owner cannot be zero address"
         );
-        require(_endTime > _startTime, "end time must be after start time");
         require(
             _rewardPerSecond > 0,
             "reward per second must be greater than 0"
@@ -75,8 +73,8 @@ contract FarmingCBJ is Ownable, ReentrancyGuard {
         );
         token = _token;
         rewardPerSecond = _rewardPerSecond;
-        startTime = _startTime;
-        endTime = _endTime;
+        startTime = block.timestamp + 60; // 1 分钟后开始
+        endTime = startTime + 365 days; // 1 年后结束
     }
 
     function deposit(uint256 _pid, uint256 _amount) public {
@@ -304,5 +302,24 @@ contract FarmingCBJ is Ownable, ReentrancyGuard {
             lpSupply;
 
         pool.lastRewardTime = lastTime;
+    }
+
+    function setRewardPeriod(
+        uint256 _startTime,
+        uint256 _endTime
+    ) public onlyOwner {
+        require(_endTime > _startTime, "end time must be after start time");
+        require(
+            block.timestamp < _startTime,
+            "start time must be in the future"
+        );
+        require(
+            block.timestamp < startTime || block.timestamp >= endTime,
+            "reward period in progress"
+        );
+        massUpdatePools();
+        startTime = _startTime;
+        endTime = _endTime;
+        emit RewardPeriodUpdated(_startTime, _endTime);
     }
 }

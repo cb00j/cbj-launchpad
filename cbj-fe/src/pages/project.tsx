@@ -355,11 +355,12 @@ export default function Pool({ Component, pageProps }: AppProps) {
   function getRegistrationSign() {
     console.log('getRegis-------')
     const f = new FormData();
-    f.append('userAddress', walletAddress || '');
-    f.append('contractAddress', saleAddress);
+    f.append('userAddress', walletAddress || '');// 钱包地址
+    f.append('contractAddress', saleAddress);// 这个 CBJSale 合约地址
 
-    return axios.post('/boba/encode/sign_registration', f)
+    return axios.post('/api/encode/sign_registration', f)
       .then((response) => {
+         // 返回一段签名 hex字符串，这个签名是后端用一个特定的私钥对钱包地址和合约地址做的签名，合约会验证这个签名，目的是证明这个用户确实有权限注册这个合约的这个项目
         let data = response.data;
         console.log(data, 'sign_registration_data')
         return data;
@@ -411,23 +412,30 @@ export default function Pool({ Component, pageProps }: AppProps) {
    * @returns Promise
    */
   function registerForSale() {
+    // 第 1 步:检查用户是否完成了社交登录/认证(推特、TG 等)
     if (!isUserRegister) {
-      showLoginModal();
+      showLoginModal();// 没认证 → 弹登录框,流程中止
       return;
     }
+    // 第 2 步:合约实例必须就绪
     if (!saleContract) {
       return Promise.reject();
     }
+    // 第 3 步:向后端要注册签名
     return getRegistrationSign()
       .then((registrationSign) => {
         console.log(registrationSign, 'sign')
+        // 把 hex 签名转成字节
         const signBuffer = hexToBytes(registrationSign);
+        // 第 4 步:带着签名调合约的 registerForSale
         return saleContract.registerForSale(signBuffer, poolId)
           .then(transaction => {
+            // 等上链确认
             return transaction.wait();
           })
           .then(() => {
             setSuccessMessage('Register success');
+            // 刷新链上状态(isRegistered 等)
             refreshStates();
             return Promise.resolve();
           })
