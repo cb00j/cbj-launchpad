@@ -1,15 +1,21 @@
 package encode
 
 import (
-	"cbj-be/controller/base"
-	"cbj-be/utils"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
+type Signer interface {
+	GetSign(hexData string) (string, error)
+}
+
 type EncodeController struct {
-	base.BaseController
+	signer Signer
+}
+
+func NewEncodeController(signer Signer) *EncodeController {
+	return &EncodeController{signer: signer}
 }
 
 func (con EncodeController) SignRegistration(c *gin.Context) {
@@ -33,7 +39,7 @@ func (con EncodeController) SignRegistration(c *gin.Context) {
 	hexStr := "0x" + concat
 
 	// 4.sign by private key and return signature
-	sign, err := utils.Credentials.GetSign(hexStr)
+	sign, err := con.signer.GetSign(hexStr)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"code":    500,

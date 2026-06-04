@@ -1,0 +1,9 @@
+[mysql]
+ip       = your_mysql_ip
+port     = 3306
+user     = your_mysql_user
+password = your_mysql_password
+database = your_database_name
+
+[signer]
+private_key = your_private_key

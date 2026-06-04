@@ -1,31 +1,28 @@
-package utils
+package signer
 
 import (
 	"crypto/ecdsa"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-var Credentials *CredentialsUtils
-
-type CredentialsUtils struct {
+type Signer struct {
+	// it's private key, so we don't export it
 	privateKey *ecdsa.PrivateKey
 }
 
-func (cu *CredentialsUtils) NewCredentialsUtils(privateKeyHex string) (string, error) {
-	privateKey, err := crypto.HexToECDSA(strings.TrimPrefix(privateKeyHex, "0x"))
+func NewSigner(privateKey string) (*Signer, error) {
+	key, err := crypto.HexToECDSA(strings.TrimPrefix(privateKey, "0x"))
 	if err != nil {
-		return "", fmt.Errorf("failed to convert private key: %w", err)
+		return nil, fmt.Errorf("invalid private key: %w", err)
 	}
-	cu.privateKey = privateKey
-	return "", nil
+	return &Signer{privateKey: key}, nil
 }
 
-func (cu *CredentialsUtils) GetSign(hexStr string) (string, error) {
+func (s *Signer) GetSign(hexStr string) (string, error) {
 	// convert hex string to bytes
 	data, err := hexutil.Decode(hexStr)
 	if err != nil {
@@ -38,14 +35,8 @@ func (cu *CredentialsUtils) GetSign(hexStr string) (string, error) {
 	// EIP-191: adding the prefix and length to the hash before signing
 	cryptoKey := crypto.Keccak256([]byte(fmt.Sprintf("\x19Ethereum Signed Message:\n%d", len(dataHash))), dataHash)
 
-	// load private key
-	LoadPrivateKey, err := LoadPrivateKey()
-	if err != nil {
-		return "", fmt.Errorf("load private key failed: %w", err)
-	}
-
 	// sign the hash with the private key using ECDSA
-	signature, err := crypto.Sign(cryptoKey, LoadPrivateKey)
+	signature, err := crypto.Sign(cryptoKey, s.privateKey)
 	if err != nil {
 		return "", fmt.Errorf("sign failed: %w", err)
 	}
@@ -53,10 +44,4 @@ func (cu *CredentialsUtils) GetSign(hexStr string) (string, error) {
 	signature[64] += 27 // make it compatible with Ethereum
 
 	return hexutil.Encode(signature), nil
-}
-
-func LoadPrivateKey() (*ecdsa.PrivateKey, error) {
-	// load private key from environment variable
-	pk := os.Getenv("SIGNER_PRIVATE_KEY")
-	return crypto.HexToECDSA(strings.TrimPrefix(pk, "0x"))
 }

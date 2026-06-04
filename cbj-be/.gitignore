@@ -18,3 +18,5 @@
 # vendor/
 pkg/
 bin/
+
+/conf/app.ini

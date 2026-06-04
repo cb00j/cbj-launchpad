@@ -16,10 +16,10 @@ export const stakingPoolAddresses = [
     },
     {
         chainId: 31337,
-        stakingAddress: "0x3aa036a2F3795AB07c9e38589514624acB5de350", // FarmingCBJ的地址
+        stakingAddress: "0x111136a2F3795AB07c9e38589514624acB5d3333", // 填AllocationStakingProxy的地址
         // TODO
-        depositTokenAddress: "0x9C645aE1079817ac0F415b39f7800038702C4af2", // 填C2N-Token的地址
-        earnedTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 填C2N-Token的地址
+        depositTokenAddress: "0x9C645aE1079817ac0F415b39f7800038702C4af2", // 填LP-Token的地址
+        earnedTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 填CBJ-Token的地址
     },
 ];
 

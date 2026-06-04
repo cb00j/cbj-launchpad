@@ -1,17 +1,21 @@
 package product
 
 import (
-	"cbj-be/controller/base"
 	"cbj-be/models"
 	"cbj-be/utils"
 	"cbj-be/vo"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type ProductController struct {
-	base.BaseController
+	db *gorm.DB
+}
+
+func NewProductController(db *gorm.DB) *ProductController {
+	return &ProductController{db: db}
 }
 
 func (con ProductController) BaseInfo(c *gin.Context) {
@@ -24,7 +28,7 @@ func (con ProductController) BaseInfo(c *gin.Context) {
 		return
 	}
 	productContract := models.ProductContract{ID: uint(productId)}
-	result := models.DB.First(&productContract)
+	result := con.db.First(&productContract)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    500,
@@ -43,7 +47,7 @@ func (con ProductController) BaseInfo(c *gin.Context) {
 
 func (con ProductController) List(c *gin.Context) {
 	var productContractList []models.ProductContract
-	models.DB.Find(&productContractList)
+	con.db.Find(&productContractList)
 
 	voList := make([]vo.ProductContractVO, 0, len(productContractList))
 	for _, product := range productContractList {

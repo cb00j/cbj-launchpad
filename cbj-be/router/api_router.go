@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ApiRouterInit(r *gin.RouterGroup) {
+func ApiRouterInit(r *gin.RouterGroup, productController *product.ProductController, encodeController *encode.EncodeController) {
 	apiRouter := r.Group("api", middleware.Auth, middleware.Log)
 	apiRouter.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -17,11 +17,11 @@ func ApiRouterInit(r *gin.RouterGroup) {
 	})
 
 	productRouter := apiRouter.Group("product")
-	productRouter.GET("/list", product.ProductController{}.List)
-	productRouter.GET("/base_info", product.ProductController{}.BaseInfo)
-	productRouter.GET("/apr", product.ProductController{}.Apr)
+	productRouter.GET("/list", productController.List)
+	productRouter.GET("/base_info", productController.BaseInfo)
+	productRouter.GET("/apr", productController.Apr)
 
 	encodeRouter := apiRouter.Group("encode")
-	encodeRouter.POST("/sign_registration", encode.EncodeController{}.SignRegistration)
-	encodeRouter.POST("/sign_participation", encode.EncodeController{}.SignParticipation)
+	encodeRouter.POST("/sign_registration", encodeController.SignRegistration)
+	encodeRouter.POST("/sign_participation", encodeController.SignParticipation)
 }
