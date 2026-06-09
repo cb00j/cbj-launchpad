@@ -120,6 +120,7 @@ export default function Pool({ Component, pageProps }: AppProps) {
   const [participateAmount, setParticipateAmount] = useState();
   const [allocationTop, setAllocationTop] = useState('1000000000000000000000');
   const [participateInfo, setParticipateInfo] = useState<any>();
+  const [onchainSale, setOnchainSale] = useState<any>(null);
 
   const [otherPoolInfo, setOtherPoolInfo] = useState<OtherPoolInfoProps>();
   const [mileStones, setMileStones] = useState<any>({})
@@ -127,7 +128,6 @@ export default function Pool({ Component, pageProps }: AppProps) {
   const [paymentTokenAddress, setPaymentTokenAddress] = useState<string>('');
   const [paymentTokenDecimal, setPaymentTokenDecimal] = useState<number>(18);
 
-  console.log({ allocationTop }, '------')
   // status: -1:not ready, 0: not started, 1: in registration, 
   // 2: after registration and before participation,
   // 3: in sale,
@@ -139,8 +139,7 @@ export default function Pool({ Component, pageProps }: AppProps) {
   const [referralCode, setReferralCode] = useState(null);
   const [referralModalVisible, setReferralModalVisible] = useState(false);
 
-  const {
-  } = useThirdParty();
+  const { ethToUsd, getEthToUsd } = useThirdParty();
   const unImplementedInterfaceLog = (text) => {
     console.log('未实现的接口：', text);
   }
@@ -155,7 +154,6 @@ export default function Pool({ Component, pageProps }: AppProps) {
         let data = response.data || {};
         data.allocationTop = 1;
         data.chainId = chain.chainId;
-        console.log('project info:', data)
         setProjectInfo(data);
         setLoginConfig({
           tweetId: data.tweetId,
@@ -171,6 +169,8 @@ export default function Pool({ Component, pageProps }: AppProps) {
       })
 
     refreshStates();
+
+    getEthToUsd();
 
     return (() => {
     })
@@ -200,6 +200,15 @@ export default function Pool({ Component, pageProps }: AppProps) {
   useEffect(() => {
     refreshStates();
   }, [saleContract, walletAddress])
+
+  useEffect(() => {
+    if (!saleContract) return;
+    saleContract.getSaleInfo()
+      .then(([totalTokensSold, totalETHRaised, amountOfTokensToSell,tokenPriceInETH]) => {
+        setOnchainSale({ totalTokensSold, totalETHRaised, amountOfTokensToSell,tokenPriceInETH });
+      })
+      .catch(e => console.error('getSaleInfo failed', e));
+  }, [saleContract]);
 
   useEffect(() => {
     if (isRegistered && depositedAmount) {
@@ -348,6 +357,13 @@ export default function Pool({ Component, pageProps }: AppProps) {
       })
   }
 
+  function refreshOnchainSale() {
+    if (!saleContract) return;
+    saleContract.sale()
+      .then(setOnchainSale)
+      .catch(e => console.error(e));
+  }
+
   /**
    * 
    * @returns Promise<string> - registration sign
@@ -362,7 +378,6 @@ export default function Pool({ Component, pageProps }: AppProps) {
       .then((response) => {
          // 返回一段签名 hex字符串，这个签名是后端用一个特定的私钥对钱包地址和合约地址做的签名，合约会验证这个签名，目的是证明这个用户确实有权限注册这个合约的这个项目
         let data = response.data;
-        console.log(data, 'sign_registration_data')
         return data;
       })
       .catch(e => {
@@ -383,10 +398,9 @@ export default function Pool({ Component, pageProps }: AppProps) {
     f.append('contractAddress', saleAddress);
     // FIXME: get Participate amount
     f.append('amount', allocationTop);
-    return axios.post('/boba/encode/sign_participation', f)
+    return axios.post('/api/encode/sign_participation', f)
       .then((response) => {
         let data = response.data;
-        console.log(data, 'sign ---------')
         return data;
       })
       .catch(e => {
@@ -426,9 +440,9 @@ export default function Pool({ Component, pageProps }: AppProps) {
       .then((registrationSign) => {
         console.log(registrationSign, 'sign')
         // 把 hex 签名转成字节
-        const signBuffer = hexToBytes(registrationSign);
+        //const signBuffer = hexToBytes(registrationSign);
         // 第 4 步:带着签名调合约的 registerForSale
-        return saleContract.registerForSale(signBuffer, poolId)
+        return saleContract.registerForSale(registrationSign, poolId)
           .then(transaction => {
             // 等上链确认
             return transaction.wait();
@@ -510,21 +524,17 @@ export default function Pool({ Component, pageProps }: AppProps) {
       .forEach(([key, value]) => {
         f.append(key, value as string);
       })
-    unImplementedInterfaceLog('/boba/amount/calc');
-    return Promise.resolve();
-    // return axios.post('/boba/amount/calc', f)
-    //   .then((response) => {
-    //     let data = response.data;
-    //     setAllocationTop(data.amount.replace(/\..+$/g, ''));
-    //     return data;
-    //   })
+    return axios.post('/api/product/allocation/calc', f)
+      .then((response: any) => {
+        setAllocationTop(String(response.amount));
+        return response;
+      })
   }
   /**
    * Participate project
    * @returns Promise
    */
   async function participate(value) {
-    console.log(value, 'val ---------------')
     if (!saleContract) {
       return Promise.reject();
     }
@@ -539,14 +549,13 @@ export default function Pool({ Component, pageProps }: AppProps) {
     return approve(saleAddress, Number(ethers.utils.formatUnits(paymentAmount, depositDecimals)), depositDecimals)
       .then(getParticipateSign)
       .then(async (participateSign) => {
-        const signBuffer = hexToBytes(participateSign);
+        //const signBuffer = hexToBytes(participateSign);
         // get participation value
         const options = {
           value: paymentAmount
         };
-        console.log({ allocationTop, paymentAmount: paymentAmount.toString(), saleAddress: projectInfo.saleContractAddress, options, bg: BigNumber.from(allocationTop + '') }, 'params---------')
         return saleContract.participate(
-          signBuffer,
+          participateSign,
           BigNumber.from(allocationTop + ''),
           options
         )
@@ -556,6 +565,7 @@ export default function Pool({ Component, pageProps }: AppProps) {
           .then((transaction) => {
             setSuccessMessage('Purchase success');
             refreshStates();
+            refreshOnchainSale();
             setShowParticipateModal(false);
             return Promise.resolve();
           })
@@ -927,14 +937,26 @@ export default function Pool({ Component, pageProps }: AppProps) {
     }
   }
   const cardInfo = useMemo(() => {
-    // FIXME: get paymentTokenDecimals from backend
-    const paymentTokenDecimas = 6;
-    let tokenPriceInUsd = projectInfo.tokenPriceInPT ? Number(projectInfo.tokenPriceInPT) / Math.pow(10, paymentTokenDecimas) : 0;
+    const paymentTokenDecimas = projectInfo.paymentTokenDecimals;
+    //let tokenPriceInUsd = projectInfo.tokenPriceInPT ? Number(projectInfo.tokenPriceInPT) / Math.pow(10, paymentTokenDecimas) : 0;
+    let tokenPriceInUsd = projectInfo.tokenPriceInPT 
+    ? (Number(projectInfo.tokenPriceInPT) / Math.pow(10, paymentTokenDecimas)) * (ethToUsd || 0) 
+    : 0;
+    // 链上实时值(读到了就用链上的,没读到回退到后端值)
+    const totalTokensSold = onchainSale?.totalTokensSold ?? projectInfo.totalTokensSold;
+    const totalETHRaised = onchainSale?.totalETHRaised;
     return {
       ...projectInfo,
       tokenPriceInUsd: tokenPriceInUsd,
+      totalTokensSold,
+      amountOfTokensToSell: onchainSale?.amountOfTokensToSell ?? projectInfo.amountOfTokensToSell,
+      tokenPriceInETH: formatEther(onchainSale?.tokenPriceInETH || '0'),
+      // totalRaised 以 ETH 计;如需 USD,再乘 ethToUsd。这里先给 ETH 数值
+      totalRaised: totalETHRaised
+        ? Number(formatEther(totalETHRaised))* (ethToUsd || 0)  
+        : projectInfo.totalRaised * (ethToUsd || 0) ,
     }
-  }, [projectInfo]);
+  }, [projectInfo,onchainSale,ethToUsd]);
 
   const participateModalData = useMemo(() => {
     return { ...cardInfo, allocationTop, paymentTokenDecimal: depositDecimals || 18, paymentTokenSymbol: depositSymbol };

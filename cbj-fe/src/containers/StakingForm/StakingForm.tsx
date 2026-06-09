@@ -143,12 +143,12 @@ export default function StakingForm(props: StakingFormProps) {
   /**
    * 获取代币价格的接口
    */
-  // useEffect(() => {
-  //   getBobaToUsd();
-  //   getBreToUsd();
+  useEffect(() => {
+    getBobaToUsd();
+    getBreToUsd();
 
-  //   // setPageLoading(true);
-  // }, []);
+    //setPageLoading(true);
+  }, []);
 
   useEffect(() => {
     if (!viewStakingContract) {
@@ -244,8 +244,8 @@ export default function StakingForm(props: StakingFormProps) {
    * on stake button click
    */
   async function onStakeButtonClick() {
-    if (depositNum == 0) {
-      setErrorMessage(`Cannot stake 0 ${depositSymbol}!`);
+    if (depositNum == 0 || depositNum == undefined) {
+      setErrorMessage(`Cannot stake invalid amount ${depositSymbol}!`);
       return;
     }
     await updateBalanceInfo();

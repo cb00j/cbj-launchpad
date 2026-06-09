@@ -21,8 +21,8 @@ export default function ParticipateModal(props) {
   } = useWallet();
   const data = props.data || {};
   const [eth, setEth] = useState<any>(0);
-  const [bre, setBre] = useState<any>(10);
-  const [max, setMax] = useState<any>(10);
+  const [cbj, setCBJ] = useState<any>(100);
+  const [max, setMax] = useState<any>(100);
 
   const tokenPriceInPT = formatEther(props.tokenPriceInPT, 18);
 
@@ -34,10 +34,10 @@ export default function ParticipateModal(props) {
     return data.paymentTokenDecimal;
   }, [data])
 
-  const calEth = useCallback((breValue) => {
+  const calEth = useCallback((cbjValue) => {
     let eth;
     try {
-      eth = Number(tokenPriceInPT) * Number(breValue)
+      eth = Number(tokenPriceInPT) * Number(cbjValue)
       // eth = formatEther(BigNumber.from((NUMBER_1E5 * breValue)).mul(Math.pow(10, 18 - decimals)).mul(data.tokenPriceInPT || 1).div(NUMBER_1E5), 8);
     } catch (e) {
       eth = 0;
@@ -47,21 +47,21 @@ export default function ParticipateModal(props) {
 
   useEffect(() => {
     if (allocationTop) {
-      const bre = 10;
-      setBre(bre);
-      setMax(bre);
-      setEth(calEth(bre));
+      const maxAmount = Number(formatEther(allocationTop));
+      setCBJ(maxAmount);
+      setMax(maxAmount);
+      setEth(calEth(maxAmount));
     }
   }, [allocationTop, decimals, calEth]);
 
   function handleInputChange(value) {
-    let bre = value;
-    setBre(bre);
-    setEth(calEth(bre));
+    let cbj = value;
+    setCBJ(cbj);
+    setEth(calEth(cbj));
   }
 
   function handleOk() {
-    props.handleOk({ value: bre });
+    props.handleOk({ value: cbj });
   }
 
   return (
@@ -109,7 +109,7 @@ export default function ParticipateModal(props) {
           {/* <AppPopover content={<>Amount {data.symbol || ''}</>}> */}
             <InputNumber
               className={styles['number']}
-              defaultValue={bre}
+              defaultValue={cbj}
               min={'1'}
               // max={Math.floor(max) || 1}
               step="1"

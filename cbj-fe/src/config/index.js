@@ -16,10 +16,10 @@ export const stakingPoolAddresses = [
     },
     {
         chainId: 31337,
-        stakingAddress: "0x111136a2F3795AB07c9e38589514624acB5d3333", // 填AllocationStakingProxy的地址
+        stakingAddress: "0xD1eeE1b97d4E082252f15Eda10d870b2B7145491", // 填AllocationStakingProxy的地址
         // TODO
-        depositTokenAddress: "0x9C645aE1079817ac0F415b39f7800038702C4af2", // 填LP-Token的地址
-        earnedTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 填CBJ-Token的地址
+        depositTokenAddress: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // 填LP-Token的地址
+        earnedTokenAddress: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // 填CBJ-Token的地址
     },
 ];
 
@@ -74,13 +74,13 @@ export const tokenImage =
 
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // 本地链 填CBJTOKEN的地址
+    31337: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // 本地链 填CBJTOKEN的地址
 }
 
 // LP token地址
 export const LP_TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x66DF8ccc423C6E2f32Ca00d1eAA7A3D3F14226f3", // 本地链 填LPTOKEN的地址
+    31337: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // 本地链 填LPTOKEN的地址
 }
 
 export const tokenSymbols = [
@@ -98,4 +98,4 @@ export const lpTokenInfos = [
     { chainId: 31337, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[31337] },
 ]
 
-export const AIRDROP_CONTRACT = "0x37c0166D96702b3446854448189b7bc4Bb6c475D" // AIRDROP_TOKEN的地址：Airdrop-C2N
+export const AIRDROP_CONTRACT = "0x866600FC6702545a8a7E9AD22FCc35c691409Db2" // AIRDROP_TOKEN的地址：Airdrop-C2N

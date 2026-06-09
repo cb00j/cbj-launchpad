@@ -12,7 +12,7 @@ import {
   VALID_CHAINS,
   tokenAbi,
 } from '@src/config'
-import abiJSON from '@src/util/abis.json'
+import CBJSaleAbi from '@src/util/abi/CBJSale.json';
 import chains from '@src/util/chain_id'
 
 import { message } from 'antd'
@@ -180,7 +180,7 @@ export const useWallet = () => {
     if (!signer || !saleAddress) {
       return;
     }
-    const saleContract = new Contract(saleAddress, abiJSON['hardhat']['C2NSale'], signer);
+    const saleContract = new Contract(saleAddress, CBJSaleAbi, signer);
     dispatch(contractActions.setContracts({
       saleContract,
     }));

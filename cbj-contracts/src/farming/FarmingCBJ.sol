@@ -36,6 +36,9 @@ contract FarmingCBJ is Ownable, ReentrancyGuard {
     // reward per second,it's shared by all pools, the actual reward each pool gets is based on its allocation points and total allocation points
     uint256 public rewardPerSecond;
 
+    // Total rewards added to farm
+    uint256 public totalRewards;
+
     // Info of each pool.
     PoolInfo[] public poolInfo;
     // Info of each user that stakes LP tokens.
@@ -237,6 +240,7 @@ contract FarmingCBJ is Ownable, ReentrancyGuard {
         require(block.timestamp < endTime, "funding has already ended");
         token.safeTransferFrom(msg.sender, address(this), _amount);
         endTime += _amount / rewardPerSecond;
+        totalRewards += _amount;
     }
 
     // return the given user's deposited amount for the given pool

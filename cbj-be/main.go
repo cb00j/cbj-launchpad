@@ -36,8 +36,9 @@ func main() {
 
 	productController := product.NewProductController(db)
 	encodeController := encode.NewEncodeController(sgn)
+	allocationController := product.NewAllocationController()
 
-	router.ApiRouterInit(root, productController, encodeController)
+	router.ApiRouterInit(root, productController, encodeController, allocationController)
 	router.AdminRouterInit(root)
 
 	http.ListenAndServe(":8080", r)

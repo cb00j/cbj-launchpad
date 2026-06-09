@@ -11,7 +11,7 @@ contract LPTokenScript is BaseScript {
         LPToken impl = new LPToken{salt: bytes32(0)}();
         saveContract("LPToken", address(impl));
         // 2. 定义我们想要的 LP 列表
-        string[1] memory lpTokens = ["LP-USDT/CBJ"];
+        string[1] memory lpTokens = ["LP-CBJ/USDT"];
 
         for (uint i = 0; i < lpTokens.length; i++) {
             // 使用名字作为 salt 的一部分，确保每个 LP 地址不同但固定

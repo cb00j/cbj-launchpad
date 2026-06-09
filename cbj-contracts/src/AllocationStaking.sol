@@ -18,7 +18,7 @@ contract AllocationStaking is
 
     struct UserInfo {
         uint256 amount; // How many LP tokens the user has provided
-        uint256 rewardDebt; // Reward debt. Current reward debt when user joined farm.
+        uint256 rewardDebt; // Reward debt. Current reward debt when user joined staking.
         uint256 tokensUnlockTime; // If user registered for sale, returns when tokens are getting unlocked
         address[] salesRegistered; // List of sales user registered for
     }
@@ -41,7 +41,7 @@ contract AllocationStaking is
     uint256 public paidOut;
     // ERC20 tokens rewarded per second
     uint256 public rewardPerSecond;
-    // Total rewards added to farm
+    // Total rewards added to staking pool
     uint256 public totalRewards;
     // Address of sales factory contract
     ISalesFactory public salesFactory;
@@ -186,6 +186,14 @@ contract AllocationStaking is
         );
     }
 
+    function fund(uint256 _amount) public {
+        require(_amount > 0, "fund amount must be greater than 0");
+        require(block.timestamp < endTime, "funding has already ended");
+        token.safeTransferFrom(msg.sender, address(this), _amount);
+        endTime += _amount / rewardPerSecond;
+        totalRewards += _amount;
+    }
+
     // update the given pool's reward allocation point. Can only be called by the owner.
     function setPool(
         uint256 _pid,
@@ -213,7 +221,7 @@ contract AllocationStaking is
     function updatePool(uint256 _pid) private {
         PoolInfo storage pool = poolInfo[_pid];
 
-        // check farming if ended
+        // check staking if ended
         uint256 lastTime = block.timestamp > endTime
             ? endTime
             : block.timestamp;

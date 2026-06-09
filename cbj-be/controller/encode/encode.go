@@ -1,6 +1,8 @@
 package encode
 
 import (
+	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -57,5 +59,49 @@ func (con EncodeController) SignRegistration(c *gin.Context) {
 }
 
 func (con EncodeController) SignParticipation(c *gin.Context) {
+	userAddress := c.PostForm("userAddress")
+	contractAddress := c.PostForm("contractAddress")
+	amount := c.PostForm("amount")
+
+	if strings.TrimSpace(userAddress) == "" ||
+		strings.TrimSpace(contractAddress) == "" ||
+		strings.TrimSpace(amount) == "" {
+		c.JSON(400, gin.H{
+			"code":    400,
+			"message": "userAddress, amount and contractAddress are required",
+		})
+		return
+	}
+
+	userAddr := strings.TrimPrefix(strings.ToLower(userAddress), "0x")
+	contractAddr := strings.TrimPrefix(strings.ToLower(contractAddress), "0x")
+
+	amountBig, ok := new(big.Int).SetString(amount, 10)
+	if !ok {
+		c.JSON(400, gin.H{
+			"code":    400,
+			"message": "invalid amount",
+		})
+		return
+	}
+
+	amountHex := fmt.Sprintf("%064x", amountBig)
+	concat := strings.ToLower(userAddr + amountHex + contractAddr)
+	hexStr := "0x" + concat
+
+	sign, err := con.signer.GetSign(hexStr)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"code":    500,
+			"message": "failed to get sign: " + err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"code":    200,
+		"data":    sign,
+		"message": "success",
+	})
 
 }

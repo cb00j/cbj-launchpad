@@ -60,14 +60,14 @@ export default [
   // },
   {
     chainId: 31337,
-    depositTokenAddress: "0x8F93a6D0C4DD211C737F28CfB74bCdaD2b3804E2", // CBJTOKEN的地址
-    earnedTokenAddress: "0x66DF8ccc423C6E2f32Ca00d1eAA7A3D3F14226f3", // LPTOKEN的地址
-    stakingAddress: "0x3aa036a2F3795AB07c9e38589514624acB5de350", // FarmingCBJ的地址
+    depositTokenAddress: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // CBJTOKEN的地址
+    earnedTokenAddress: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // LPTOKEN的地址
+    stakingAddress: "0xdC57cEC78b6e6499F4B5c9587A033E0186F7a9Fd", // FarmingCBJ的地址
     poolId: 0,
     available: true,
-    depositSymbol: "LP-USDT/CBJ",
+    depositSymbol: "LP-CBJ/USDT",
     earnedSymbol: "CBJ",
-    title: "Local/CBJ LP-USDT/CBJ",
+    title: "Local/CBJ LP-CBJ/USDT",
     depositLogo:
       "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/04/17/69e1a6dc29da4.png",
     earnedLogo:
@@ -84,9 +84,9 @@ export default [
   //   stakingAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // FarmingC2N的地址
   //   poolId: 0,
   //   available: true,
-  //   depositSymbol: "LP-USDT/CBJ",
+  //   depositSymbol: "LP-CBJ/USDT",
   //   earnedSymbol: "CBJ",
-  //   title: "Local/CBJ LP-USDT/CBJ",
+  //   title: "Local/CBJ LP-CBJ/USDT",
   //   depositLogo:
   //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
   //   earnedLogo:

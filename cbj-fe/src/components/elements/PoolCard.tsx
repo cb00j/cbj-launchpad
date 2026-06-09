@@ -60,7 +60,7 @@ export default function PoolCard(props: PoolCardProds) {
   }, [info]);
 
   const progress = useMemo(() => {
-    let p = formatEther(info.totalTokensSold) * 125 / formatEther(info.amountOfTokensToSell || 1);
+    let p = formatEther(info.totalTokensSold) * 100 / formatEther(info.amountOfTokensToSell || 1);
     p = p > 100 ? 100 : p < 0 ? 0 : p;
     p = parseFloat(p.toFixed(2));
     return p;
@@ -103,7 +103,6 @@ export default function PoolCard(props: PoolCardProds) {
   }, [info, status]);
 
   const totalTokensSoldInEther = useMemo(() => {
-    console.log(info.totalRaised)
     return formatEther(info?.totalTokensSold || 0);
   }, [info]);
 
@@ -165,7 +164,7 @@ export default function PoolCard(props: PoolCardProds) {
               <label>Start Date</label>
             </div>
             <div className={styles['row']}>
-              {basicElement('createTime', 'startDate', v => formatDate(v, 'Month DD, YYYY'))}
+              {basicElement('saleStart', 'startDate', v => formatDate(v, 'Month DD, YYYY'))}
             </div>
           </div>
         </Col>
@@ -178,7 +177,7 @@ export default function PoolCard(props: PoolCardProds) {
             <div className={styles['row']}>
               {/* <AppPopover content={info && info.tokenPriceInUsd}> */}
               <div className={styles['token-price']}>
-                1/32000 ETH
+                {(info?.tokenPriceInETH)} ETH
                 <div className={styles['extra']}>
                   ~ ${(info?.tokenPriceInUsd)?.toFixed(4) || '0'}
                 </div>

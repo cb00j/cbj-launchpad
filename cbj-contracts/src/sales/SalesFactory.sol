@@ -23,9 +23,7 @@ contract SalesFactory is Ownable {
         address indexed saleOwner
     );
 
-    constructor(address admin, address _allocationStaking) Ownable(admin) {
-        allocationStaking = _allocationStaking;
-    }
+    constructor(address admin) Ownable(admin) {}
 
     function setAllocationStaking(
         address _allocationStaking

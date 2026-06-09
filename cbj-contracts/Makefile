@@ -19,6 +19,7 @@ deploy-local:
 	@forge script script/AirDropScript.s.sol --rpc-url local --broadcast
 	@forge script script/LPTokenScirpt.s.sol --rpc-url local --broadcast
 	@forge script script/FarmingCBJScript.s.sol --rpc-url local --broadcast
+	@forge script script/StakingAndSaleScript.s.sol --rpc-url local --broadcast
 	@echo "Local deployment complete"
 
 # 测试网部署

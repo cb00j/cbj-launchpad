@@ -21,10 +21,15 @@ export const useThirdParty = () => {
   }
 
   function getBreToUsd() {
-    return axios.get('/boba/apr/bre_price')
-    .then((response:any)=>{
-      dispatch(setBreToUsd(Number(response.data)))
-    })
+    // return axios.get('/boba/apr/bre_price')
+    // .then((response:any)=>{
+    //   dispatch(setBreToUsd(Number(response.data)))
+    // })
+    // 1. 发送 dispatch 通知 Redux 仓库更新价格为 0.5
+    dispatch(setBreToUsd(0.5));
+    
+    // 2. 返回一个立刻成功的 Promise，防止外面的 .then() 报错
+    return Promise.resolve();
   }
 
   return {

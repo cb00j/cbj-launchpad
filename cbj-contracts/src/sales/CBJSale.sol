@@ -45,9 +45,9 @@ contract CBJSale is ReentrancyGuard, Ownable {
         address saleOwner;
         // price of the token quoted in ETH
         uint256 tokenPriceInETH;
-        // amount of tokens to sell
+        // amount of tokens to sell,unit is wei
         uint256 amountOfTokensToSell;
-        // total tokens being sold
+        // total tokens being sold,,unit is wei
         uint256 totalTokensSold;
         // total ETH raised
         uint256 totalETHRaised;
@@ -370,7 +370,7 @@ contract CBJSale is ReentrancyGuard, Ownable {
         require(isRegistered[msg.sender], "Not registered");
 
         // check user haven't participated before
-        require(isParticipated[msg.sender], "User can participate only once.");
+        require(!isParticipated[msg.sender], "User can participate only once.");
 
         // verify the signature
         require(
@@ -383,8 +383,7 @@ contract CBJSale is ReentrancyGuard, Ownable {
 
         // compute the amount of tokens user is buying
         uint256 amountOfTokensBuying = (msg.value *
-            10 *
-            IERC20Metadata(address(sale.token)).decimals()) /
+            10 ** IERC20Metadata(address(sale.token)).decimals()) /
             sale.tokenPriceInETH;
 
         // must buy more than 0 tokens
@@ -421,6 +420,22 @@ contract CBJSale is ReentrancyGuard, Ownable {
         numberOfParticipants++;
 
         emit TokensSold(msg.sender, amountOfTokensBuying);
+    }
+
+    function getSaleInfo()
+        external
+        view
+        returns (
+            uint256 totalTokensSold,
+            uint256 totalETHRaised,
+            uint256 amountOfTokensToSell,
+            uint256 tokenPriceInETH
+        )
+    {
+        totalTokensSold = sale.totalTokensSold;
+        totalETHRaised = sale.totalETHRaised;
+        amountOfTokensToSell = sale.amountOfTokensToSell;
+        tokenPriceInETH = sale.tokenPriceInETH;
     }
 
     function withdrawTokens(uint256 portionId) external {

@@ -61,7 +61,7 @@ export default function LivePoolCard(props: LivePoolCardProds) {
   }, [info]);
 
   const progress = useMemo(()=>{
-    let p = formatEther(info.totalTokensSold) * 125 / formatEther(info.amountOfTokensToSell||1);
+    let p = formatEther(info.totalTokensSold) * 100 / formatEther(info.amountOfTokensToSell||1);
     p = p > 100 ? 100 : p < 0 ? 0 : p;
     p = parseFloat(p.toFixed(2));
     return p;
@@ -69,10 +69,10 @@ export default function LivePoolCard(props: LivePoolCardProds) {
 
 
   const tokenPriceInUsd:number = useMemo(()=>{
-    // FIXME: get paymentTokenDecimals from backend
-    const paymentTokenDecimas = 6;
-    return props?.info?.tokenPriceInPT ? Number(props.info.tokenPriceInPT)/Math.pow(10, paymentTokenDecimas) : 0;
-  }, [props])
+    const paymentTokenDecimas = props?.info?.paymentTokenDecimals ? Number(props.info.paymentTokenDecimals) : 0;
+    console.log('paymentTokenDecimas', paymentTokenDecimas);
+    return props?.info?.tokenPriceInPT ? Number(props.info.tokenPriceInPT)/Math.pow(10, paymentTokenDecimas) * (ethToUsd || 0) : 0;
+  }, [props, ethToUsd])
 
   const timer = useMemo(() =>{
     return (<div className={styles['timer']}>
@@ -238,7 +238,7 @@ export default function LivePoolCard(props: LivePoolCardProds) {
             <label className={styles['label']}>Start Date</label>
           </div>
           <div className={[styles['row'], styles['value']].join(' ')}>
-            {basicElement('createTime', 'startDate', v=>formatDate(v, 'YYYY-MM-DD'))}
+            {basicElement('saleStart', 'startDate', v=>formatDate(v, 'YYYY-MM-DD'))}
           </div>
         </Col>
         {/* 3 */}
