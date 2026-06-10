@@ -46,9 +46,6 @@ export default function Index({ Component, pageProps }: AppProps) {
         // 根据你的拦截器逻辑，res 可能是 Result 对象
         // 需要取 res.data 才是数组
         const actualData = res?.data || [];
-        
-        console.log('actualData:', actualData);
-        
         setProjectData(actualData);
         setLivePoolsData(actualData.sort((a, b) => {
           return a.status - b.status;

@@ -469,11 +469,19 @@ export default function Pool({ Component, pageProps }: AppProps) {
                 }
               })
             }
+            let retryCount = 0;
+            const MAX_RETRY = 3; 
             function loop() {
               setTimeout(() => {
                 sendRegisterSuccess()
-                  .catch(() => {
-                    loop();
+                  .catch((e) => {
+                    console.error('sendRegisterSuccess failed:', e);
+                    retryCount++;
+                    if (retryCount < MAX_RETRY) {
+                      loop(); // retry
+                    } else {
+                      console.error('register sync failed after max retries');
+                    }
                   })
               }, 3000)
             }

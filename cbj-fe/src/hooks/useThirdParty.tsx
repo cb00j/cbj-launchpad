@@ -14,10 +14,14 @@ export const useThirdParty = () => {
   }
 
   function getEthToUsd() {
-    return axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR')
-    .then((response:any)=>{
-      dispatch(setEthToUsd(response.USD))
-    })
+    axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+      .then((res: any) => {
+        const ethUsd = res?.ethereum?.usd || 0;   // ← 去掉 .data
+        dispatch(setEthToUsd(ethUsd));
+      })
+      .catch(e => {
+        console.error('get eth price failed:', e);
+      });
   }
 
   function getBreToUsd() {

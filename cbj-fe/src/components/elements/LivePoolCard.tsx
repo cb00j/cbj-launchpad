@@ -70,7 +70,6 @@ export default function LivePoolCard(props: LivePoolCardProds) {
 
   const tokenPriceInUsd:number = useMemo(()=>{
     const paymentTokenDecimas = props?.info?.paymentTokenDecimals ? Number(props.info.paymentTokenDecimals) : 0;
-    console.log('paymentTokenDecimas', paymentTokenDecimas);
     return props?.info?.tokenPriceInPT ? Number(props.info.tokenPriceInPT)/Math.pow(10, paymentTokenDecimas) * (ethToUsd || 0) : 0;
   }, [props, ethToUsd])
 

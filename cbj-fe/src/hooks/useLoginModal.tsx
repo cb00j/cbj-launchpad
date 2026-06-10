@@ -508,28 +508,28 @@ export const useLogin = ({ pId = 0 }) => {
 
 
   function getRegisterStatus() {
-    if (!walletAddress) {
-      return;
-    }
-    setDataLoading(true);
-    axios.get('/boba/user/is_register', {
-      params: {
-        accountId: walletAddress,
-        pid: pId,
-      }
-    })
-      .then((res) => {
-        const data = res && res.data;
-        if (data) {
-          // setIsUserRegister(data.loginEmail && data.tgId && data.userAddress && data.retweetLink);
-          setIsUserRegister(data.loginEmail && data.userAddress && data.retweetLink);
-          setRegisterData(data);
-        }
-      })
-      .catch(e => e)
-      .finally(() => {
-        setDataLoading(false);
-      })
+    // if (!walletAddress) {
+    //   return;
+    // }
+    // setDataLoading(true);
+    // axios.get('/boba/user/is_register', {
+    //   params: {
+    //     accountId: walletAddress,
+    //     pid: pId,
+    //   }
+    // })
+    //   .then((res) => {
+    //     const data = res && res.data;
+    //     if (data) {
+    //       // setIsUserRegister(data.loginEmail && data.tgId && data.userAddress && data.retweetLink);
+    //       setIsUserRegister(data.loginEmail && data.userAddress && data.retweetLink);
+    //       setRegisterData(data);
+    //     }
+    //   })
+    //   .catch(e => e)
+    //   .finally(() => {
+    //     setDataLoading(false);
+    //   })
   }
 
   function sendEmailCode() {

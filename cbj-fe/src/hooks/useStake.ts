@@ -101,12 +101,9 @@ export const useStake = () => {
   useEffect(() => {
     if (!depositTokenContract || !walletAddress) {
     } else {
-      console.log(depositTokenContract, 'depositTokenContract11');
-      console.log(walletAddress, 'walletAddress11')
       depositTokenContract.balanceOf(walletAddress).then(setBalance).catch((e) => { console.error(e) });
       depositTokenContract.decimals().then(setDepositDecimals).catch((e) => { console.error(e) });
       depositTokenContract.symbol().then(setDepositSymbol).catch((e) => { console.error(e) });
-      console.log(balance, 'balance1111');
     }
   }, [depositTokenContract, walletAddress]);
 
@@ -115,12 +112,10 @@ export const useStake = () => {
       if (!depositTokenContract || !account) {
       } else {
         try {
-          console.log(depositTokenContract, 'depositTokenContract2');
-          console.log(walletAddress, 'walletAddress2')
           depositTokenContract.balanceOf(account).then(setBalance).catch((e) => { console.error(e) });
           depositTokenContract.decimals().then(setDepositDecimals).catch((e) => { console.error(e) });
           depositTokenContract.symbol().then(setDepositSymbol).catch((e) => { console.error(e) });
-          console.log(balance, 'balance22222');
+  
         } catch (e) {
         }
       }

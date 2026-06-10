@@ -216,7 +216,6 @@ export default function FarmingForm(props: FarmingFormProps) {
       const ret =
         viewStakingContract.poolInfo &&
         (await viewStakingContract.poolInfo(poolId));
-      console.log(ret, 'ret')
       setPoolInfo(ret);
     } catch (e) {
       console.error(e);
