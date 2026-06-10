@@ -5,8 +5,10 @@ import (
 	"cbj-be/controller/product"
 	"cbj-be/internal/signer"
 	"cbj-be/models"
+	"cbj-be/onchain"
 	"cbj-be/router"
 	"cbj-be/utils"
+	"context"
 
 	"net/http"
 
@@ -34,11 +36,19 @@ func main() {
 		panic("failed to create signer: " + err.Error())
 	}
 
+	listener, err := onchain.NewRegisterListener(config.OnChainParameters.WsURL, db)
+	if err != nil {
+		panic("failed to create listener: " + err.Error())
+	}
+	listener.LoadSalesFromDB()
+	go listener.Start(context.Background())
+
 	productController := product.NewProductController(db)
 	encodeController := encode.NewEncodeController(sgn)
 	allocationController := product.NewAllocationController()
+	registerController := product.NewRegisterController(db)
 
-	router.ApiRouterInit(root, productController, encodeController, allocationController)
+	router.ApiRouterInit(root, productController, encodeController, allocationController, registerController)
 	router.AdminRouterInit(root)
 
 	http.ListenAndServe(":8080", r)

@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	MySQL  MySQLConfig
-	Signer SignerConfig
+	MySQL             MySQLConfig
+	Signer            SignerConfig
+	OnChainParameters OnChainParameters
 }
 
 type MySQLConfig struct {
@@ -21,6 +22,10 @@ type MySQLConfig struct {
 
 type SignerConfig struct {
 	PrivateKey string `ini:"private_key"`
+}
+
+type OnChainParameters struct {
+	WsURL string `ini:"ws_url"`
 }
 
 func LoadConfig(path string) (*Config, error) {
@@ -36,6 +41,9 @@ func LoadConfig(path string) (*Config, error) {
 	}
 	if err := config.Section("signer").MapTo(&cfg.Signer); err != nil {
 		return nil, fmt.Errorf("map signer config: %w", err)
+	}
+	if err := config.Section("onchain").MapTo(&cfg.OnChainParameters); err != nil {
+		return nil, fmt.Errorf("map onchain config: %w", err)
 	}
 
 	if cfg.Signer.PrivateKey == "" {

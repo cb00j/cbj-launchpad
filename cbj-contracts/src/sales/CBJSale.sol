@@ -109,11 +109,11 @@ contract CBJSale is ReentrancyGuard, Ownable {
         _;
     }
 
-    event TokensSold(address user, uint256 amount);
-    event UserRegistered(address user);
+    event TokensSold(address indexed user, uint256 amount);
+    event UserRegistered(address indexed user, uint256 indexed pid);
     event TokenPriceSet(uint256 newPrice);
     event MaxParticipationSet(uint256 newMaxParticipation);
-    event TokensWithdrawn(address user, uint256 amount);
+    event TokensWithdrawn(address indexed user, uint256 amount);
     event SaleCreated(
         address saleOwner,
         uint256 tokenPriceInETH,
@@ -348,7 +348,7 @@ contract CBJSale is ReentrancyGuard, Ownable {
         registration.numberOfRegistrants++;
 
         // Emit Registration event
-        emit UserRegistered(msg.sender);
+        emit UserRegistered(msg.sender, pid);
     }
 
     function participate(

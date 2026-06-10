@@ -447,36 +447,37 @@ export default function Pool({ Component, pageProps }: AppProps) {
             // 等上链确认
             return transaction.wait();
           })
-          .then(() => {
+          .then((receipt) => {
+            const txHash = receipt.transactionHash;
             setSuccessMessage('Register success');
             // 刷新链上状态(isRegistered 等)
             refreshStates();
-            return Promise.resolve();
+            return txHash;
           })
-          .then(() => {
-            // // on register success
-            // const sendRegisterSuccess = async () => {
-            //   const referralCode = localStorage?.getItem('referral');
-            //   const f = new FormData();
-            //   f.append('accountId', walletAddress);
-            //   f.append('productId', pId);
-            //   f.append('referralCode', referralCode)
-            //   return axios.post('/boba/register/user_register', f).then(() => {
-            //     if (typeof window !== 'undefined') {
-            //       window.localStorage.removeItem('referral');
-            //     }
-            //   })
-            // }
-
-            function loop() {
-              // setTimeout(() => {
-              //   sendRegisterSuccess()
-              //     .catch(() => {
-              //       loop();
-              //     })
-              // }, 3000)
+          .then((txHash) => {
+            // on register success
+            const sendRegisterSuccess = async () => {
+              const referralCode = localStorage?.getItem('referral');
+              const f = new FormData();
+              f.append('accountId', walletAddress);
+              f.append('productId', pId);
+              f.append('referralCode', referralCode)
+              f.append('txHash', txHash)
+              return axios.post('/api/product/register/user_register', f).then(() => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.removeItem('referral');
+                }
+              })
             }
-            // loop();
+            function loop() {
+              setTimeout(() => {
+                sendRegisterSuccess()
+                  .catch(() => {
+                    loop();
+                  })
+              }, 3000)
+            }
+             loop();
           })
           .then(() => {
             function loop() {

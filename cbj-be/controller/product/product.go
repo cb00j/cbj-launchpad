@@ -27,8 +27,16 @@ func (con ProductController) BaseInfo(c *gin.Context) {
 		})
 		return
 	}
-	productContract := models.ProductContract{ID: uint(productId)}
-	result := con.db.First(&productContract)
+	//productContract := models.ProductContract{ID: uint(productId)}
+	//result := con.db.First(&productContract)
+	var productContract models.ProductContract
+	result := con.db.Model(&models.ProductContract{}).
+		Select("product_contract.*, "+
+			"(SELECT COUNT(*) FROM product_registration r "+
+			"WHERE r.product_id = product_contract.id AND r.status = 1) AS number_of_registrants").
+		Where("product_contract.id = ?", productId).
+		First(&productContract)
+
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    500,
@@ -37,7 +45,7 @@ func (con ProductController) BaseInfo(c *gin.Context) {
 		return
 	}
 
-	vo := vo.FromModel(&productContract)
+	vo := productContract.ToVO()
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"data":    vo,
@@ -51,7 +59,7 @@ func (con ProductController) List(c *gin.Context) {
 
 	voList := make([]vo.ProductContractVO, 0, len(productContractList))
 	for _, product := range productContractList {
-		voList = append(voList, *vo.FromModel(&product))
+		voList = append(voList, *product.ToVO())
 	}
 
 	c.JSON(http.StatusOK, gin.H{
