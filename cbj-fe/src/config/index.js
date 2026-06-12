@@ -17,9 +17,8 @@ export const stakingPoolAddresses = [
     {
         chainId: 31337,
         stakingAddress: "0xD1eeE1b97d4E082252f15Eda10d870b2B7145491", // 填AllocationStakingProxy的地址
-        // TODO
-        depositTokenAddress: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // 填LP-Token的地址
-        earnedTokenAddress: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // 填CBJ-Token的地址
+        depositTokenAddress: "0x31Afb76742cd07DAc1C92Cd567b045cA63653515", // 填LP-Token的地址
+        earnedTokenAddress: "0x3831A9994e23C444b3BAdFc0fc803814b6f88Edf", // 填CBJ-Token的地址
     },
 ];
 
@@ -74,13 +73,23 @@ export const tokenImage =
 
 export const TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // 本地链 填CBJTOKEN的地址
+    31337: "0x3831A9994e23C444b3BAdFc0fc803814b6f88Edf", // 本地链 填CBJTOKEN的地址
 }
 
 // LP token地址
 export const LP_TOKEN_ADDRESS_MAP = {
     11155111: "0x4E71E941878CE2afEB1039A0FE16f5eb557571C8", // 测试链sepolia
-    31337: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // 本地链 填LPTOKEN的地址
+    31337: "0x31Afb76742cd07DAc1C92Cd567b045cA63653515", // 本地链 填LPTOKEN的地址
+}
+
+export const AIRDROP_ADDRESS_MAP = {
+    11155111: {
+
+    },
+    31337: {
+        'CBJ':"0x16477603B3A9bBa51151B336A7C2057294Ca56B2", //Airdrop-CBJ
+        'LP-CBJ':"0x029a8268152296430739a562aD0776fE8BDa1958", //Airdrop-LP-CBJ
+    }, 
 }
 
 export const tokenSymbols = [
@@ -89,13 +98,11 @@ export const tokenSymbols = [
 ]
 
 export const tokenInfos = [
-    { chainId: 11155111, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[11155111] },
-    { chainId: 31337, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[31337] },
+    { chainId: 11155111, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[11155111]},
+    { chainId: 31337, symbol: 'CBJ', address: TOKEN_ADDRESS_MAP[31337]},
 ]
 
 export const lpTokenInfos = [
-    { chainId: 11155111, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[11155111] },
-    { chainId: 31337, symbol: 'CBJ', address: LP_TOKEN_ADDRESS_MAP[31337] },
+    { chainId: 11155111, symbol: 'LP-CBJ', address: LP_TOKEN_ADDRESS_MAP[11155111]},
+    { chainId: 31337, symbol: 'LP-CBJ', address: LP_TOKEN_ADDRESS_MAP[31337]},
 ]
-
-export const AIRDROP_CONTRACT = "0x866600FC6702545a8a7E9AD22FCc35c691409Db2" // AIRDROP_TOKEN的地址：Airdrop-C2N

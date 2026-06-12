@@ -61,9 +61,12 @@ export default function LivePoolCard(props: LivePoolCardProds) {
   }, [info]);
 
   const progress = useMemo(()=>{
+    console.log('LivePoolCard totalTokensSold:', info.totalTokensSold);
+  console.log('LivePoolCard amountOfTokensToSell:', info.amountOfTokensToSell);
     let p = formatEther(info.totalTokensSold) * 100 / formatEther(info.amountOfTokensToSell||1);
     p = p > 100 ? 100 : p < 0 ? 0 : p;
     p = parseFloat(p.toFixed(2));
+     console.log('LivePoolCard progress:', p);
     return p;
   }, [info]);
 
@@ -178,8 +181,41 @@ export default function LivePoolCard(props: LivePoolCardProds) {
   return (
     <div 
      className={styles['live-pool-card']+' '+(props.className || '')} 
-     onClick={props.onClick}
+     // 如果 status 是 0，可以选择不绑定 onClick 事件
+     onClick={status === 0 ? undefined : props.onClick} 
+     style={{ position: 'relative' }} // 【关键修改】：添加相对定位作为蒙层参照
     >
+      {status === 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 半透明黑色蒙层
+            backdropFilter: 'blur(4px)', // 毛玻璃效果
+            zIndex: 10, // 确保蒙层盖住卡片内所有元素
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 'inherit', // 自动继承你在 css 里给卡片写的 border-radius
+            cursor: 'not-allowed'
+          }}
+          onClick={(e) => e.stopPropagation()} // 阻止点击事件穿透到底层
+        >
+          <span style={{
+            color: '#FFFFFF',
+            fontSize: '32px',
+            fontWeight: '900',
+            letterSpacing: '2px',
+            textShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' // 增加阴影让文字在复杂背景下更清晰
+          }}>
+            In Coming!
+          </span>
+        </div>
+      )}
+      
       {isDesktopOrLaptop ? timer : <></>}
       <Row justify="start" align={isDesktopOrLaptop ? "middle" : "top"} gutter={16} style={{marginTop:'30px'}}>
         <Col span={isDesktopOrLaptop ? 6 : 8} style={{textAlign:'center'}}>

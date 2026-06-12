@@ -144,6 +144,23 @@ export default function Pool({ Component, pageProps }: AppProps) {
     console.log('未实现的接口：', text);
   }
 
+  const [chainNow, setChainNow] = useState(0);
+
+  useEffect(() => {
+    if (!saleContract) return;
+    const fetchChainTime = () => {
+      saleContract.provider.getBlock('latest')
+        .then((block) => {
+          setChainNow(block.timestamp * 1000);  // 链上时间是秒,转毫秒
+        })
+        .catch((e) => console.error('get chain time failed', e));
+    };
+    fetchChainTime();
+    // 每 5 秒刷新一次链上时间(本地推进时间后能及时反映)
+    const timer = setInterval(fetchChainTime, 5000);
+    return () => clearInterval(timer);
+  }, [saleContract]);
+
 
   useEffect(() => {
     setPageLoading(true);
@@ -232,7 +249,6 @@ export default function Pool({ Component, pageProps }: AppProps) {
     return participateInfo && participateInfo[3] || 0;
   }, [participateInfo])
 
-  // FIXME: should get vesting info from project api
   const vestingInfo = useMemo(() => {
     if (projectInfo && projectInfo.vestingPercentPerPortion && projectInfo.vestingPortionsUnlockTime) {
       return [projectInfo.vestingPercentPerPortion, projectInfo.vestingPortionsUnlockTime];
@@ -248,17 +264,26 @@ export default function Pool({ Component, pageProps }: AppProps) {
   const vestingPortionsUnlockTime: Array<number> = useMemo(() => {
     return vestingInfo && vestingInfo[1] || [];
   }, [vestingInfo]);
+
   const canWithdrawArr: Array<boolean> = useMemo(() => {
-    if (vestingPortionsUnlockTime && isPortionWithdrawn) {
-      return isPortionWithdrawn.map((canWithdraw, index) => {
-        return !canWithdraw && (vestingPortionsUnlockTime[index] || '0' + '000') <= (Date.now() + '');
-      })
-    } else if (isPortionWithdrawn) {
-      return isPortionWithdrawn.map(v => !v);
-    } else {
+    // 没有 vesting 时间或没有提取记录时的兜底
+    if (!isPortionWithdrawn || !Array.isArray(isPortionWithdrawn)) {
       return [true];
     }
-  }, [isPortionWithdrawn, status])
+
+    // 有解锁时间数组:判断每个 portion 是否「已解锁 且 未提取」
+    if (vestingPortionsUnlockTime && vestingPortionsUnlockTime.length > 0) {
+      return isPortionWithdrawn.map((withdrawn, index) => {
+        // 该 portion 的解锁时间(链上是秒,转毫秒)
+        const unlockTimeMs = Number(vestingPortionsUnlockTime[index] || 0) * 1000;
+        // 可提条件:未提取(!withdrawn) 且 已到解锁时间(用链上时间比较)
+        return !withdrawn && unlockTimeMs <= chainNow;
+      });
+    }
+
+    // 没有解锁时间数组,只按是否已提取判断
+    return isPortionWithdrawn.map((withdrawn) => !withdrawn);
+  }, [isPortionWithdrawn, vestingPortionsUnlockTime, chainNow]);
 
   useEffect(() => {
     const bigNumSec2Milsec = (bigSec) => {
@@ -369,7 +394,6 @@ export default function Pool({ Component, pageProps }: AppProps) {
    * @returns Promise<string> - registration sign
    */
   function getRegistrationSign() {
-    console.log('getRegis-------')
     const f = new FormData();
     f.append('userAddress', walletAddress || '');// 钱包地址
     f.append('contractAddress', saleAddress);// 这个 CBJSale 合约地址
@@ -623,8 +647,8 @@ export default function Pool({ Component, pageProps }: AppProps) {
     if (!saleContract) {
       return Promise.reject;
     }
-    let option = { gasLimit: 100000 }
-    return saleContract.getParticipation(walletAddress, option)
+    //let option = { gasLimit: 100000 }
+    return saleContract.getParticipation(walletAddress)
       .then(data => {
         return setParticipateInfo(data);
       })
@@ -979,9 +1003,12 @@ export default function Pool({ Component, pageProps }: AppProps) {
       {
         vestingPortionsUnlockTime && vestingPercentPerPortion ?
           vestingPortionsUnlockTime.map((sec, index) => {
-            // status: 0-not start yet, 1-can withdraw, 2-Withdrawn
-            let status: number = (Date.now() + '') < (sec + '000') ? 0 : 1;
-            isPortionWithdrawn && isPortionWithdrawn[index] && status === 1 && (status = 2);
+            const unlockTimeMs = Number(sec) * 1000;  // 解锁时间:秒→毫秒
+            // status: 0-未解锁, 1-可提, 2-已提
+            let status: number = unlockTimeMs > chainNow ? 0 : 1;  // ← 用 chainNow(链上时间)数值比较
+            if (isPortionWithdrawn && isPortionWithdrawn[index] && status === 1) {
+              status = 2;
+            }
             return <Timeline.Item key={index}
               color={status === 0 ? 'gray' : '#55BC7E'}
               label={formatDate(sec + '000', 'hh:mm:ss, Month DD, YYYY')}

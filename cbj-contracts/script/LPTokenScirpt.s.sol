@@ -4,6 +4,7 @@ pragma solidity ^0.8.23;
 import {BaseScript} from "./BaseScript.s.sol";
 import {LPToken} from "../src/token/LPToken.sol";
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
+import {AirDrop} from "../src/AirDrop.sol";
 
 contract LPTokenScript is BaseScript {
     function run() public broadcaster {
@@ -11,7 +12,7 @@ contract LPTokenScript is BaseScript {
         LPToken impl = new LPToken{salt: bytes32(0)}();
         saveContract("LPToken", address(impl));
         // 2. 定义我们想要的 LP 列表
-        string[1] memory lpTokens = ["LP-CBJ/USDT"];
+        string[1] memory lpTokens = ["LP-CBJ"];
 
         for (uint i = 0; i < lpTokens.length; i++) {
             // 使用名字作为 salt 的一部分，确保每个 LP 地址不同但固定
@@ -24,7 +25,20 @@ contract LPTokenScript is BaseScript {
             vm.label(lpToken, lpTokens[i]);
             saveContract(lpTokens[i], lpToken);
             // 测试：顺便给测试账号铸造点币
-            LPToken(lpToken).mint(deployer, 100 * 1e18);
+            LPToken(lpToken).mint(deployer, 1000_000 * 1e18);
+
+            AirDrop airDrop = new AirDrop{salt: salt}(
+                address(lpToken),
+                10000 * 1e18
+            );
+            saveContract(
+                string.concat(lpTokens[i], "-AirDrop"),
+                address(airDrop)
+            );
+            require(
+                LPToken(lpToken).transfer(address(airDrop), 1000_000 * 1e18),
+                "initial transfer failed"
+            );
         }
     }
 }

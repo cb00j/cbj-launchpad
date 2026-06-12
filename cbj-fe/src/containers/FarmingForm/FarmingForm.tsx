@@ -566,8 +566,8 @@ export default function FarmingForm(props: FarmingFormProps) {
         }
         <section className={styles['container']}>
           <Row className={styles['container-title']} align="middle" justify="start">
-            {<div>{depositSymbol} - {earnedSymbol}</div>}
-            {<img src={props.depositLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img>}
+            {/* {<div>{depositSymbol} - {earnedSymbol}</div>}
+            {<img src={props.depositLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img>} */}
             &nbsp;
             {<img src={props.earnedLogo} style={{ width: '1.2em', height: '1.2em', borderRadius: '50%' }}></img>}
             &nbsp;
@@ -645,9 +645,7 @@ export default function FarmingForm(props: FarmingFormProps) {
           <Row className={styles['record']} justify="space-between">
             <Col className={styles['record-label']}>
               {
-                priceInLP ?
-                  <>1 {props.title} ≈ $ {priceInLP}</>
-                  : <>{props.title}</>
+                <>{props.title}</>
               }
             </Col>
             <Col className={styles['record-value']}>

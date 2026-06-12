@@ -15,6 +15,10 @@ PRIVATE_KEY := $(shell grep PRIVATE_KEY .env | cut -d '=' -f2)
 
 # 本地部署
 deploy-local:
+	@echo "Cleaning old state..."
+	@rm -rf broadcast/
+	@rm -rf cache/
+	@rm -f deployments/contract_addresses.json
 	@echo "Deploying to local..."
 	@forge script script/AirDropScript.s.sol --rpc-url local --broadcast
 	@forge script script/LPTokenScirpt.s.sol --rpc-url local --broadcast

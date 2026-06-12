@@ -60,40 +60,59 @@ export default [
   // },
   {
     chainId: 31337,
-    depositTokenAddress: "0x9fbcaEF0C59457276d3F410C78e4c6De05477B33", // CBJTOKEN的地址
-    earnedTokenAddress: "0xC6Db2E5BA752Feb811628b344Ff5e854eA98835f", // LPTOKEN的地址
-    stakingAddress: "0xdC57cEC78b6e6499F4B5c9587A033E0186F7a9Fd", // FarmingCBJ的地址
+    depositTokenAddress: "0x3831A9994e23C444b3BAdFc0fc803814b6f88Edf", // CBJTOKEN的地址
+    earnedTokenAddress: "0x31Afb76742cd07DAc1C92Cd567b045cA63653515", // LPTOKEN的地址
+    stakingAddress: "0xC62739fEfD3599dB50A82022f0F2081c052D5F0f", // FarmingCBJ的地址
     poolId: 0,
     available: true,
-    depositSymbol: "LP-CBJ/USDT",
+    depositSymbol: "LP-CBJ",
     earnedSymbol: "CBJ",
-    title: "Local/CBJ LP-CBJ/USDT",
+    title: "Anvil/CBJ LP-CBJ",
     depositLogo:
-      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/04/17/69e1a6dc29da4.png",
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
     earnedLogo:
-      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/04/17/69e1a6dc29da4.png",
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
     getLptHref:
       "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
     aprRate: 3.15 / 20,
     aprUrl: "/api/product/apr",
   },
-  // {
-  //   chainId: 31337,
-  //   depositTokenAddress: "0x82550B351160A5FeFb42a900247A0c321be23350", // CBJTOKEN的地址
-  //   earnedTokenAddress: "0xb26655BA28c8F8dd2dFbF03cf4e6436A8e03F157", // LPTOKEN的地址
-  //   stakingAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // FarmingC2N的地址
-  //   poolId: 0,
-  //   available: true,
-  //   depositSymbol: "LP-CBJ/USDT",
-  //   earnedSymbol: "CBJ",
-  //   title: "Local/CBJ LP-CBJ/USDT",
-  //   depositLogo:
-  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/bnb-logo.svg",
-  //   earnedLogo:
-  //     "https://bobabrewery.oss-ap-southeast-1.aliyuncs.com/Brewery32x32.png",
-  //   getLptHref:
-  //     "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
-  //   aprRate: 3.15 / 20,
-  //   aprUrl: "/boba/apr/bsc",
-  // },
+  {
+    chainId: 31337,
+    depositTokenAddress: "", // CBJTOKEN的地址
+    earnedTokenAddress: "", // LPTOKEN的地址
+    stakingAddress: "", // FarmingC2N的地址
+    poolId: 1,
+    available: false,
+    depositSymbol: "LP-ZST",
+    earnedSymbol: "ZST",
+    title: "Anvil/ZST LP-ZST",
+    depositLogo:
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
+    earnedLogo:
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
+    getLptHref:
+      "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
+    aprRate: 3.15 / 20,
+    aprUrl: "#",
+  },
+  {
+    chainId: 31337,
+    depositTokenAddress: "", // CBJTOKEN的地址
+    earnedTokenAddress: "", // LPTOKEN的地址
+    stakingAddress: "", // FarmingC2N的地址
+    poolId: 2,
+    available: false,
+    depositSymbol: "LP-CJX",
+    earnedSymbol: "CJX",
+    title: "Anvil/CJX LP-CJX",
+    depositLogo:
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
+    earnedLogo:
+      "https://images-cbj.oss-cn-hangzhou.aliyuncs.com/2026/06/11/6a2a20d33b01c.png",
+    getLptHref:
+      "https://pancakeswap.finance/add/BNB/0x9eBBEB7f6b842377714EAdD987CaA4510205107A",
+    aprRate: 3.15 / 20,
+    aprUrl: "#",
+  },
 ];

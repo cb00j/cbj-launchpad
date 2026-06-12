@@ -34,21 +34,40 @@ contract StakingAndSaleScript is BaseScript {
             deployer,
             0.5 * 1e18,
             10000 * 1e18,
-            block.timestamp + 365 days,
-            block.timestamp + 365 days + 1000000,
+            block.timestamp + 1 days,
+            block.timestamp + 1 days,
             1000 * 1e18,
-            100
+            1000
         );
         cbjSale.setRegistrationTime(
-            block.timestamp + 10,
+            block.timestamp + 60,
             block.timestamp + 365 days
         );
 
-        CBJToken rewardToken = CBJToken(getAddress("CBJToken"));
-        rewardToken.approve(address(allocationStaking), 1000_000 * 1e18);
+        uint256 todayMidnight = block.timestamp -
+            (block.timestamp % 1 days) -
+            8 hours;
+        uint256[] memory unlockTimes = new uint256[](4);
+        unlockTimes[0] = todayMidnight;
+        unlockTimes[1] = todayMidnight + 1 days;
+        unlockTimes[2] = todayMidnight + 2 days;
+        unlockTimes[3] = todayMidnight + 3 days;
+        uint256[] memory percentPerPortion = new uint256[](4);
+        percentPerPortion[0] = 100;
+        percentPerPortion[1] = 200;
+        percentPerPortion[2] = 300;
+        percentPerPortion[3] = 400;
+
+        cbjSale.setVestingParams(unlockTimes, percentPerPortion, 30 days);
+
+        CBJToken cbjToken = CBJToken(getAddress("CBJToken"));
+        cbjToken.approve(address(allocationStaking), 1000_000 * 1e18);
+        cbjToken.approve(address(cbjSale), 1000_000 * 1e18);
+
+        cbjSale.depositTokens(1000_000 * 1e18); // Deposit tokens into the sale
 
         allocationStaking.fund(1000_000 * 1e18);
-        allocationStaking.addPool(100, IERC20(getAddress("LP-CBJ/USDT")), true); // 初始化一个流动性池，分配权重为 100
+        allocationStaking.addPool(100, IERC20(getAddress("LP-CBJ")), true); // 初始化一个流动性池，分配权重为 100
 
         saveContract("AllocationStaking", address(allocationStaking));
         saveContract("SalesFactory", address(salesFactory));

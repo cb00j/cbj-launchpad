@@ -3,8 +3,11 @@ export const IconAppLogo = AppLogo;
 import EthLogo from '@src/assets/icons/svg/eth.svg'
 export const IconEth = EthLogo;
 
-import C2nLogo from '@src/assets/icons/svg/c2n.svg'
-export const IconC2n = C2nLogo;
+import CBJLogo from '@src/assets/icons/svg/cbj-token.svg'
+export const IconCBJ = CBJLogo;
+
+import lpCBJLogo from '@src/assets/icons/svg/lptoken.svg'
+export const IconLpCBJ = lpCBJLogo;
 
 import HomeBannerLogo from '@src/assets/icons/svg/home_banner_logo.svg'
 export const IconHomeBannerLogo = HomeBannerLogo;

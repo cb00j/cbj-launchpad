@@ -13,13 +13,18 @@ contract AirDrop {
 
     uint256 public totalClaimedAmount;
 
-    uint256 public constant AMOUNT_PER_CLAIM = 100 * 1e18;
+    uint256 private constant DEFAULT_AMOUNT_PER_CLAIM = 100 * 1e18;
+
+    uint256 public amountPerClaim;
 
     event TokenAirDropped(address indexed user, uint256 amount);
 
-    constructor(address _token) {
+    constructor(address _token, uint256 _amountPerClaim) {
         require(_token != address(0), "AirDrop: invalid address");
         token = IERC20(_token);
+        amountPerClaim = _amountPerClaim < DEFAULT_AMOUNT_PER_CLAIM
+            ? DEFAULT_AMOUNT_PER_CLAIM
+            : _amountPerClaim;
     }
 
     function claim() external {
@@ -27,9 +32,9 @@ contract AirDrop {
         require(!wasClaimed[msg.sender], "AirDrop: already claimed");
 
         wasClaimed[msg.sender] = true;
-        token.safeTransfer(msg.sender, AMOUNT_PER_CLAIM);
-        totalClaimedAmount += AMOUNT_PER_CLAIM;
+        token.safeTransfer(msg.sender, amountPerClaim);
+        totalClaimedAmount += amountPerClaim;
 
-        emit TokenAirDropped(msg.sender, AMOUNT_PER_CLAIM);
+        emit TokenAirDropped(msg.sender, amountPerClaim);
     }
 }

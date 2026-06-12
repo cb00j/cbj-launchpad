@@ -9,7 +9,7 @@ import BasicButton from '@src/components/elements/Button.Basic'
 import { useWallet } from '@src/hooks/useWallet';
 import { useResponsive } from '@src/hooks/useResponsive';
 import { WarningOutlined, QuestionCircleOutlined } from '@ant-design/icons'
-import { tokenSymbols } from '@src/config'
+import { lpTokenInfos } from '@src/config'
 
 import {
   tokenImage,
@@ -49,7 +49,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
   }
 
   const tokenInfo = useMemo(() => {
-    return tokenSymbols.find((item) => item.chainId == chain?.chainId) || tokenSymbols[0];
+    return lpTokenInfos.find((item) => item.chainId == chain?.chainId) || lpTokenInfos[0];
   }, [chain]);
 
   return (
@@ -59,7 +59,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
         <h2 className={styles['stake-title']}>
           <Row justify="space-between">
             <Col>
-              <span>C2N Staking</span>
+              <span>Staking</span>
             </Col>
             <Col>
               <span style={{ fontSize: '16px', verticalAlign: 'middle' }}>
@@ -68,13 +68,13 @@ export default function Pools({ Component, pageProps }: AppProps) {
                 <span
                   className={styles['link']}
                   onClick={() => {
-                  }}>{isDesktopOrLaptop ? 'C2N Staking Tutorial' : 'Tutorial'} </span>
+                  }}>{isDesktopOrLaptop ? 'Staking Tutorial' : 'Tutorial'} </span>
               </span>
             </Col>
           </Row>
         </h2>
         <div className={styles['info']}>
-          There is NO extra fee for {tokenInfo.symbol} token staking, NO extra fee for unlocking. Members in C2N are attracted by our promising projects, not restricted by us charging a fee. However, IDO projects might require their own different lock-up period, see more details from the
+          There is NO extra fee for {tokenInfo.symbol} token staking, NO extra fee for unlocking. Members in CBJ-LAUNCHPAD are attracted by our promising projects, not restricted by us charging a fee. However, IDO projects might require their own different lock-up period, see more details from the
           <Link href="/pools">&nbsp;Projects page</Link>.
           <br />
           <br />
@@ -82,7 +82,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
             <Col span={isDesktopOrLaptop ? 16 : 24}>
               Step1: Connect your wallet to stake {tokenInfo.symbol} token, which is required to participate in IDOs.
               <br />
-              Step2: Use {tokenInfo.symbol} token to register for IDOs on C2N website, first come first serve.
+              Step2: Use {tokenInfo.symbol} token to register for IDOs on CBJ-LAUNCHPAD website, first come first serve.
               <br />
               Step3: Always remember, the longer you hold our BRE tokens, the more projects which have potentials and values you could participate with us!
               <br />

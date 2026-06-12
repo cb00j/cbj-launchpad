@@ -23,7 +23,7 @@ export default function Footer(props: FooterProds) {
           <h4>SOCIAL</h4>
           <Row>
             <Col span={isDesktopOrLaptop ? 24 : 12}>
-              <a href="https://discord.gg/2uVUYy7N" target="_blank" rel="noreferrer">Discord</a>
+              <a target="_blank" rel="noreferrer">Discord</a>
             </Col>
           </Row>
         </Col>
@@ -39,7 +39,7 @@ export default function Footer(props: FooterProds) {
           <h4>HELP</h4>
           <Row>
             <Col span={isDesktopOrLaptop ? 24 : 12}>
-              <a href="https://github.com/TechPlanB" target="_blank" rel="noreferrer">Github</a>
+              <a href="https://github.com/cb00j/cbj-launchpad" target="_blank" rel="noreferrer">Github</a>
             </Col>
           </Row>
         </Col>

@@ -318,6 +318,23 @@ contract CBJSale is ReentrancyGuard, Ownable {
         emit MaxParticipationSet(cap);
     }
 
+    function setSaleEnd(uint256 _saleEnd) external onlyOwner {
+        require(
+            _saleEnd >= block.timestamp,
+            "Sale end must be greater than current timestamp"
+        );
+        sale.saleEnd = _saleEnd;
+    }
+
+    function setTokensUnlockTime(uint256 _tokensUnlockTime) external onlyOwner {
+        require(sale.isCreated, "Sale not created");
+        require(
+            _tokensUnlockTime > block.timestamp,
+            "Tokens unlock time must be greater than current timestamp"
+        );
+        sale.tokensUnlockTime = _tokensUnlockTime;
+    }
+
     /////////////////////////////////⬇️user functions⬇️/////////////////////////////////
 
     /// @notice     Registration for sale.
@@ -439,10 +456,14 @@ contract CBJSale is ReentrancyGuard, Ownable {
     }
 
     function withdrawTokens(uint256 portionId) external {
+        require(block.timestamp >= sale.saleEnd, "Sale has not ended yet.");
+
         require(
             block.timestamp >= sale.tokensUnlockTime,
-            "Sale has not ended yet."
+            "Token unlock time not reached yet."
         );
+
+        require(sale.tokensDeposited, "Tokens not deposited yet.");
 
         require(
             portionId < vestingPercentPerPortion.length,
@@ -480,7 +501,7 @@ contract CBJSale is ReentrancyGuard, Ownable {
         );
 
         uint256 totalAmountToWithdraw = 0;
-        Participation memory p = userToParticipation[msg.sender];
+        Participation storage p = userToParticipation[msg.sender];
 
         for (uint i = 0; i < portionIds.length; i++) {
             uint256 portionId = portionIds[i];
@@ -488,7 +509,10 @@ contract CBJSale is ReentrancyGuard, Ownable {
                 portionId < vestingPercentPerPortion.length,
                 "Invalid portion id"
             );
-            if ((p.isPortionWithdrawn[portionId]) == true) {
+            if (p.isPortionWithdrawn[portionId] == true) {
+                continue;
+            }
+            if (vestingPortionsUnlockTime[portionId] > block.timestamp) {
                 continue;
             }
             p.isPortionWithdrawn[portionId] = true;
@@ -559,7 +583,8 @@ contract CBJSale is ReentrancyGuard, Ownable {
         require(!sale.earningWithdrawn, "Earnings already withdrawn");
         sale.earningWithdrawn = true;
         uint256 amountToWithdraw = sale.totalETHRaised;
-        sale.token.safeTransfer(msg.sender, amountToWithdraw);
+        (bool success, ) = msg.sender.call{value: amountToWithdraw}("");
+        require(success, "ETH transfer failed");
         emit TokensWithdrawn(msg.sender, amountToWithdraw);
     }
 

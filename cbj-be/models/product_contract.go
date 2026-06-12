@@ -27,7 +27,7 @@ type ProductContract struct {
 	Follower                  int       `gorm:"column:follower;not null;default:0" json:"follower"`
 	Tge                       time.Time `gorm:"column:tge" json:"tge"`
 	ProjectWebsite            string    `gorm:"column:project_website;type:varchar(500)" json:"projectWebsite"`
-	AboutHtml                 string    `gorm:"column:about_html;type:varchar(500)" json:"aboutHtml"`
+	AboutHtml                 string    `gorm:"column:about_html;type:varchar(5000)" json:"aboutHtml"`
 	RegistrationTimeStarts    time.Time `gorm:"column:registration_time_starts" json:"registrationTimeStarts"`
 	RegistrationTimeEnds      time.Time `gorm:"column:registration_time_ends" json:"registrationTimeEnds"`
 	SaleStart                 time.Time `gorm:"column:sale_start" json:"saleStart"`

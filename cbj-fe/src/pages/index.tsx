@@ -77,15 +77,14 @@ export default function Index({ Component, pageProps }: AppProps) {
         <Row>
           <Col span={isDesktopOrLaptop ? 18 : 24}>
             <h1 className="title">
-              C2N: Fundraising platform
+              CBJ-LAUNCHPAD: Fundraising platform on Anvil
               <br />
-              on Sepolia
             </h1>
             <div className="desc">
-              C2N is the first exclusive launchpad for decentralized fundraising
+              CBJ-LAUNCHPAD is the first exclusive launchpad for decentralized fundraising
               <br />
               offering the hottest and innovative projects in
-              <br />
+              
               a fair, secure, and efficient way.
             </div>
             <Link href="/stake" passHref>
@@ -200,7 +199,7 @@ export default function Index({ Component, pageProps }: AppProps) {
                 our value together!
               </h2>
               <div className="desc">
-                Bringing the world-class projects to C2N and making it
+                Bringing the world-class projects to CBJ-LAUNCHPAD and making it
                 <br />
                 an innovative community is our mission! We believe the power
                 <br />
@@ -437,7 +436,7 @@ export default function Index({ Component, pageProps }: AppProps) {
             Project Teams
           </h2>
           <div className="desc">
-            Feel free to easily access resources in C2N that help you succeed at every step from fundraising to market expansion. Besides raising money,
+            Feel free to easily access resources in CBJ-LAUNCHPAD that help you succeed at every step from fundraising to market expansion. Besides raising money,
             <br />
             hope you can enjoy your time in our community and continuously find your investors, partners, advisors and customers.
           </div>
