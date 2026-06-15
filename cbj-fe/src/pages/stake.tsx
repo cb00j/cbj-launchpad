@@ -84,7 +84,7 @@ export default function Pools({ Component, pageProps }: AppProps) {
               <br />
               Step2: Use {tokenInfo.symbol} token to register for IDOs on CBJ-LAUNCHPAD website, first come first serve.
               <br />
-              Step3: Always remember, the longer you hold our BRE tokens, the more projects which have potentials and values you could participate with us!
+              Step3: Always remember, the longer you hold our LP-CBJ tokens, the more projects which have potentials and values you could participate with us!
               <br />
             </Col>
             <Col span={isDesktopOrLaptop ? 8 : 24}>

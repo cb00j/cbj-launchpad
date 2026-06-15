@@ -70,6 +70,17 @@ export default function LivePoolCard(props: LivePoolCardProds) {
     return p;
   }, [info]);
 
+  const totalRaisedUsd = useMemo(() => {
+    if (!info.totalRaised) return 0;
+    try {
+      const ethAmount = Number(formatEther(info.totalRaised));  // wei → ETH
+      return ethAmount * (ethToUsd || 0);                        // ETH → USD
+    } catch (e) {
+      console.error('totalRaisedUsd calc failed:', e);
+      return 0;
+    }
+  }, [info.totalRaised, ethToUsd]);
+
 
   const tokenPriceInUsd:number = useMemo(()=>{
     const paymentTokenDecimas = props?.info?.paymentTokenDecimals ? Number(props.info.paymentTokenDecimals) : 0;
@@ -241,15 +252,15 @@ export default function LivePoolCard(props: LivePoolCardProds) {
         <div className={styles['total-raise-label']}>
           Total raised
         </div>
-        <AppPopover content={<>{seperateNumWithComma(info&&(info.totalRaised/1).toFixed(2))}</>}>
-          <div className={styles['total-raise']}>
-            {
-              status>2
-              ? <>$ {info?.totalRaised&&formatNumber((info?.totalRaised/1).toFixed(2))||'0.00'}</>
+        <AppPopover content={<>$ {seperateNumWithComma(totalRaisedUsd.toFixed(2))}</>}>
+        <div className={styles['total-raise']}>
+          {
+            status > 2
+              ? <>$ {totalRaisedUsd ? formatNumber(totalRaisedUsd.toFixed(2)) : '0.00'}</>
               : <span style={{fontSize: '.8em'}}>Starts on {formatDate(info.registrationTimeEnds, 'Month DD, YYYY')}</span>
-            }
-          </div>
-        </AppPopover>
+          }
+        </div>
+      </AppPopover>
       </Row>
       <Row 
        justify={'space-between'}

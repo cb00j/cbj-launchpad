@@ -13,6 +13,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -36,12 +37,7 @@ func main() {
 		panic("failed to create signer: " + err.Error())
 	}
 
-	listener, err := onchain.NewRegisterListener(config.OnChainParameters.WsURL, db)
-	if err != nil {
-		panic("failed to create listener: " + err.Error())
-	}
-	listener.LoadSalesFromDB()
-	go listener.Start(context.Background())
+	startListener(config, db)
 
 	productController := product.NewProductController(db)
 	encodeController := encode.NewEncodeController(sgn)
@@ -53,4 +49,19 @@ func main() {
 
 	http.ListenAndServe(":8080", r)
 	r.Run()
+}
+
+func startListener(config *utils.Config, db *gorm.DB) {
+	listener, err := onchain.NewListener(config.OnChainParameters.WsURL, db)
+	if err != nil {
+		panic("failed to create listener: " + err.Error())
+	}
+	if err := listener.LoadSalesFromDB(); err != nil {
+		panic("load sales failed: " + err.Error())
+	}
+
+	listener.RegisterHandler(onchain.NewRegisterHandler(listener))
+	listener.RegisterHandler(onchain.NewParticipateHandler(listener))
+
+	go listener.Start(context.Background())
 }
