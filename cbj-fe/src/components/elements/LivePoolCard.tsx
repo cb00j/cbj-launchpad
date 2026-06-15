@@ -61,12 +61,9 @@ export default function LivePoolCard(props: LivePoolCardProds) {
   }, [info]);
 
   const progress = useMemo(()=>{
-    console.log('LivePoolCard totalTokensSold:', info.totalTokensSold);
-  console.log('LivePoolCard amountOfTokensToSell:', info.amountOfTokensToSell);
     let p = formatEther(info.totalTokensSold) * 100 / formatEther(info.amountOfTokensToSell||1);
     p = p > 100 ? 100 : p < 0 ? 0 : p;
     p = parseFloat(p.toFixed(2));
-     console.log('LivePoolCard progress:', p);
     return p;
   }, [info]);
 

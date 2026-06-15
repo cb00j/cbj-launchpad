@@ -1,4 +1,7 @@
 import { IconBobaNetwork, IconBNB, IconEth,IconAppLogo, } from "@src/components/icons";
+const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || 'http://localhost:8545';
+
+
 
 export const VALID_CHAINS = [
   {
@@ -27,9 +30,9 @@ export const VALID_CHAINS = [
       symbol: "GO",
       decimals: 18,
     },
-    rpc: ["http://localhost:8545"],
+    rpc: [RPC_URL],
     faucets: [],
-    infoURL: "http://localhost:8545",
+    infoURL: RPC_URL,
   },
   {
     name: "Arbitrum Sepolia",

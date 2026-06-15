@@ -1,3 +1,5 @@
+const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || 'http://localhost:8545';
+
 const chains = [
   {
     "name": "Ethereum Mainnet",
@@ -2646,10 +2648,10 @@ const chains = [
       "decimals": 18
     },
     "rpc": [
-      "http://localhost:8545"
+      RPC_URL
     ],
     "faucets": [],
-    "infoURL": "http://localhost:8545"
+    "infoURL": RPC_URL
   },
   {
     "name": "Catecoin Chain Mainnet",
