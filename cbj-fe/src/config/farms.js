@@ -1,4 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { STAKING_POOL_ADDRESSES, getStakingPool,CHAIN_ID} from './index'
+const pool = getStakingPool(CHAIN_ID);
 export default [
   // {
   //   chainId: 56,
@@ -60,9 +62,9 @@ export default [
   // },
   {
     chainId: 31337,
-    depositTokenAddress: "0x3831A9994e23C444b3BAdFc0fc803814b6f88Edf", // CBJTOKEN的地址
-    earnedTokenAddress: "0x31Afb76742cd07DAc1C92Cd567b045cA63653515", // LPTOKEN的地址
-    stakingAddress: "0xC62739fEfD3599dB50A82022f0F2081c052D5F0f", // FarmingCBJ的地址
+    depositTokenAddress: pool?.depositTokenAddress, // CBJTOKEN的地址
+    earnedTokenAddress: pool?.earnedTokenAddress, // LPTOKEN的地址
+    stakingAddress: pool?.farmingAddress, // FarmingCBJ的地址
     poolId: 0,
     available: true,
     depositSymbol: "LP-CBJ",
