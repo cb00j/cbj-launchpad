@@ -14,7 +14,7 @@ export const EARNED_TOKEN_AIRDROP_ADDRESS =
 
 // LP-CBJ token airdrop address    
 export const STAKED_TOKEN_AIRDROP_ADDRESS = 
-    process.env.NEXT_PUBLIC_EARNED_TOKEN_AIRDROP_ADDRESS; 
+    process.env.NEXT_PUBLIC_STAKED_TOKEN_AIRDROP_ADDRESS; 
     
 export const STAKING_POOL_ADDRESSES = JSON.parse(
   process.env.NEXT_PUBLIC_STAKING_POOL_ADDRESSES || '{}'

@@ -9,6 +9,8 @@ import (
 	"cbj-be/router"
 	"cbj-be/utils"
 	"context"
+	"fmt"
+	"os"
 
 	"net/http"
 
@@ -21,8 +23,14 @@ func main() {
 	r := gin.Default()
 	root := r.Group("cbj-launchpad")
 
+	env := os.Getenv("APP_ENV")
+	if env == "" {
+		env = "dev"
+	}
+
 	// initialization
-	config, err := utils.LoadConfig("./conf/app.ini")
+	configPath := fmt.Sprintf("./conf/app-%s.ini", env)
+	config, err := utils.LoadConfig(configPath)
 	if err != nil {
 		panic("failed to load config: " + err.Error())
 	}
