@@ -13,6 +13,7 @@ const ThemeProviderWrapper = (props) => {
 export const Providers = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
+      {/* @ts-expect-error 忽略这里的 React 18 类型冲突 */}
         <Provider store={localStore}>
           {children}
         </Provider>

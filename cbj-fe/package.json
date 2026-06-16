@@ -7,6 +7,7 @@
     "build:staging": "export NODE_ENV=development && env-cmd -f ./.env.staging next build && next export",
     "build:analyze": "export NODE_ENV=production && ANALYZE=true next build && next export",
     "start": "export NODE_ENV=development && next start",
+    "prod": "export NODE_ENV=production && next build && next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -30,7 +31,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2",
     "react-motion": "^0.5.2",
-    "react-redux": "^7.2.6",
+    "react-redux": "^7.2.9",
     "react-router": "^6.2.1",
     "react-router-redux": "^4.0.8",
     "react-share": "^4.4.0",
@@ -43,6 +44,7 @@
     "@svgr/webpack": "^6.2.0",
     "@types/node": "^17.0.0",
     "@types/react": "^17.0.37",
+    "@types/react-redux": "^7.1.25",
     "env-cmd": "^10.1.0",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
