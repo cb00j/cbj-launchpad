@@ -40,6 +40,8 @@ export default function LivePoolCard(props: LivePoolCardProds) {
   } = useResponsive()
 
   const [status, setStatus] = useState<number>(-1)
+  // 用于在解锁阶段(status=4)某批倒计时结束后,强制重新计算"下一批"的时间
+  const [unlockRefresh, setUnlockRefresh] = useState<number>(0)
 
   useEffect(()=> {
     info && setStatus(info.status);
@@ -84,40 +86,75 @@ export default function LivePoolCard(props: LivePoolCardProds) {
     return props?.info?.tokenPriceInPT ? Number(props.info.tokenPriceInPT)/Math.pow(10, paymentTokenDecimas) * (ethToUsd || 0) : 0;
   }, [props, ethToUsd])
 
+  // 解锁阶段:从 vestingPortionsUnlockTime 找下一个还没到的解锁批次时间(毫秒)
+  // 返回 null 表示所有批次都已解锁
+  const getNextUnlockTime = useCallback((): number | null => {
+    const now = Date.now();
+    let vesting: any = info.vestingPortionsUnlockTime;
+    // 兼容:万一是字符串则解析
+    if (typeof vesting === 'string') {
+      try { vesting = JSON.parse(vesting); } catch { vesting = []; }
+    }
+    if (!Array.isArray(vesting) || vesting.length === 0) {
+      // 没有 vesting 数组,退回总解锁时间
+      return info.unlockTime ? Number(info.unlockTime) : null;
+    }
+    // vesting 是秒级时间戳,转毫秒后找第一个 > now 的批次
+    const next = vesting
+      .map((t: any) => Number(t) * 1000)
+      .filter((t: number) => !isNaN(t))
+      .find((t: number) => t > now);
+    return next ?? null;  // 全部解锁则 null
+  }, [info, unlockRefresh]);
+
   const timer = useMemo(() =>{
+    // status=4(解锁阶段):倒计时指向下一个未解锁批次;其它阶段用对应单点时间
+    const countdownValue = status === 4
+      ? getNextUnlockTime()
+      : [
+          info.registrationTimeStarts,
+          info.registrationTimeEnds,
+          info.saleStart,
+          info.saleEnd,
+        ][status];
+
     return (<div className={styles['timer']}>
       <span style={{marginRight:'4px'}}>
-        {[
-          'Register starts in:',
-          'Register ends in:',
-          'Sale starts in:',
-          'Sale ends in:',
-          'Token unlocks in:',
-          'Sale ended',
-        ][status] || 'To start'}
+        {
+          // 解锁阶段且已全部解锁 → 显示"已全部解锁";否则正常文案
+          status === 4 && !countdownValue
+            ? 'All unlocked'
+            : ([
+                'Register starts in:',
+                'Register ends in:',
+                'Sale starts in:',
+                'Sale ends in:',
+                'Token unlocks in:',
+                'Sale ended',
+              ][status] || 'To start')
+        }
       </span>
       {
-        status > -1 && status < 5
+        status > -1 && status < 5 && countdownValue
         ? 
         <Countdown 
           className={styles['counter']}
           valueStyle={{fontSize:'16px',color:'#D7FF1E'}}
-          key={status}
-          value={
-            [
-              info.registrationTimeStarts,
-              info.registrationTimeEnds,
-              info.saleStart,
-              info.saleEnd,
-              info.unlockTime,
-            ][info.status]
-          } 
+          key={status + '-' + countdownValue}
+          value={countdownValue} 
           format="HH:mm:ss" 
-          onFinish={()=>{setStatus(status+1);}} />
+          onFinish={()=>{
+            if (status === 4) {
+              // 解锁阶段:某批倒计时结束,触发重算下一批(不推进 status)
+              setUnlockRefresh(v => v + 1);
+            } else {
+              setStatus(status + 1);
+            }
+          }} />
           : ''
       }
     </div>)
-  }, [info, status])
+  }, [info, status, unlockRefresh, getNextUnlockTime])
 
   
   const trickers = useMemo(()=>{

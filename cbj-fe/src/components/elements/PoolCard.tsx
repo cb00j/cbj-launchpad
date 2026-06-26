@@ -34,6 +34,9 @@ export default function PoolCard(props: PoolCardProds) {
   } = useResponsive();
 
   const [status, setStatus] = useState<number>(-1)
+  // 解锁阶段(status=4)某批倒计时结束后,强制重算"下一批"
+  const [unlockRefresh, setUnlockRefresh] = useState<number>(0)
+
   const info: any = useMemo(() => {
     return props.info || {};
   }, [props])
@@ -66,41 +69,71 @@ export default function PoolCard(props: PoolCardProds) {
     return p;
   }, [info]);
 
+  // 解锁阶段:从 vestingPortionsUnlockTime 找下一个还没到的解锁批次时间(毫秒)
+  // 返回 null 表示全部已解锁
+  const getNextUnlockTime = useCallback((): number | null => {
+    const now = Date.now();
+    let vesting: any = info.vestingPortionsUnlockTime;
+    if (typeof vesting === 'string') {
+      try { vesting = JSON.parse(vesting); } catch { vesting = []; }
+    }
+    if (!Array.isArray(vesting) || vesting.length === 0) {
+      return info.unlockTime ? Number(info.unlockTime) : null;
+    }
+    const next = vesting
+      .map((t: any) => Number(t) * 1000)   // 秒 → 毫秒
+      .filter((t: number) => !isNaN(t))
+      .find((t: number) => t > now);
+    return next ?? null;
+  }, [info, unlockRefresh]);
+
   const timer = useMemo(() => {
+    const countdownValue = status === 4
+      ? getNextUnlockTime()
+      : [
+          info.registrationTimeStarts,
+          info.registrationTimeEnds,
+          info.saleStart,
+          info.saleEnd,
+        ][status];
+
     return (
       <div className={styles['timer']}>
         <span style={{ marginRight: '4px' }}>
-          {[
-            'Register starts in:',
-            'Register ends in:',
-            'Sale starts in:',
-            'Sale ends in:',
-            'Token unlocks in:',
-            'Sale ended',
-          ][status] || 'Coming soon'}
+          {
+            status === 4 && !countdownValue
+              ? 'All unlocked'
+              : ([
+                  'Register starts in:',
+                  'Register ends in:',
+                  'Sale starts in:',
+                  'Sale ends in:',
+                  'Token unlocks in:',
+                  'Sale ended',
+                ][status] || 'Coming soon')
+          }
         </span>
         {
-          status > -1 && status < 5
+          status > -1 && status < 5 && countdownValue
             ?
             <Countdown
               className={styles['counter']}
               valueStyle={{ fontSize: '16px', color: '#55BC7E' }}
-              value={
-                [
-                  info.registrationTimeStarts,
-                  info.registrationTimeEnds,
-                  info.saleStart,
-                  info.saleEnd,
-                  info.unlockTime
-                ][status]
-              }
+              key={status + '-' + countdownValue}
+              value={countdownValue}
               format="HH:mm:ss"
-              onFinish={() => { setStatus(status + 1); }} />
+              onFinish={() => {
+                if (status === 4) {
+                  setUnlockRefresh(v => v + 1);
+                } else {
+                  setStatus(status + 1);
+                }
+              }} />
             : ''
         }
       </div>
     );
-  }, [info, status]);
+  }, [info, status, unlockRefresh, getNextUnlockTime]);
 
   const totalTokensSoldInEther = useMemo(() => {
     return formatEther(info?.totalTokensSold || 0);
