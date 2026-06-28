@@ -129,7 +129,7 @@ export default function LivePoolCard(props: LivePoolCardProds) {
                 'Register ends in:',
                 'Sale starts in:',
                 'Sale ends in:',
-                'Token unlocks in:',
+                'Next unlock in:',
                 'Sale ended',
               ][status] || 'To start')
         }
